@@ -1,4 +1,3 @@
-// src/components/About.jsx
 import React from "react";
 
 export default function About() {
@@ -31,22 +30,26 @@ export default function About() {
                 {/* Contenedor de la imagen */}
                 <div className="w-full md:w-1/3 flex-shrink-0">
                     <img
-                        src="https://dummyimage.com/300x300/e0e0e0/000000&text=Foto+de+Perfil"
+                        src="/avatar.jpg"
                         alt="Foto de perfil"
                         className="w-full h-auto rounded-lg shadow-lg rotate-2 border-2 border-white dark:border-gray-800"
                     />
                 </div>
 
                 {/* Contenedor de la descripción */}
-                <div className="w-full md:w-2/3">
-                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                        Hola, soy [Tu Nombre], un desarrollador fullstack con experiencia en la creación de aplicaciones web robustas y escalables. Me
-                        especializo en el ecosistema de [Tecnología Principal] en el backend y [Tecnología Frontend] para las interfaces de usuario.
+                <div class="w-full md:w-2/3">
+                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4 text-justify">
+                        Soy <strong>Carlos Oliva</strong>, un desarrollador de software y administrador de sistemas con experiencia en desarrollo web,
+                        gestión de IT e Internet de las Cosas (IoT). He trabajado en proyectos de alto impacto utilizando tecnologías como{" "}
+                        <span class="text-yellow-500 font-bold">PHP, JavaScript, Python</span>, y frameworks como{" "}
+                        <span class="text-yellow-500 font-bold">Laravel, FastAPI</span>, y <span class="text-yellow-500 font-bold">Django</span>.
+                        También tengo experiencia con soluciones de e-commerce en{" "}
+                        <span class="text-yellow-500 font-bold">Prestashop y WooCommerce</span>.
                     </p>
-                    <p className="text-lg text-gray-700 dark:text-gray-300">
-                        Me apasiona resolver problemas complejos y me esfuerzo por escribir código limpio, eficiente y mantenible. He trabajado en
-                        proyectos que van desde APIs RESTful hasta interfaces de usuario interactivas, siempre con el objetivo de ofrecer una
-                        excelente experiencia de usuario.
+                    <p class="text-lg text-gray-700 dark:text-gray-300 text-justify">
+                        Mi rol más reciente se ha enfocado en el soporte funcional y el análisis de aplicaciones, con el objetivo de asegurar que las
+                        soluciones entregadas superen las expectativas del cliente. Combino mis habilidades técnicas con una comunicación efectiva
+                        para resolver problemas y aportar valor en entornos dinámicos y desafiantes.
                     </p>
                 </div>
             </div>
