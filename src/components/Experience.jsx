@@ -16,7 +16,6 @@ export default function Experience() {
                 const parseDate = (dateString) => {
                     const normalizedDate = dateString.toLowerCase();
                     if (normalizedDate.includes("actualidad") || normalizedDate.includes("actualmente")) {
-                        // Las experiencias actuales siempre van al principio
                         return new Date(2100, 0, 1);
                     }
                     const [monthStr, yearStr] = dateString.split(" ");
@@ -46,7 +45,7 @@ export default function Experience() {
                         "nov.": 10,
                         "dic.": 11,
                     };
-                    const monthIndex = months[monthStr.toLowerCase().replace(".", "")]; // Manejamos 'ene.' y 'ene'
+                    const monthIndex = months[monthStr.toLowerCase().replace(".", "")];
                     const year = parseInt(yearStr);
 
                     if (isNaN(monthIndex) || isNaN(year)) {
@@ -73,17 +72,9 @@ export default function Experience() {
         fetchExperiences();
     }, []);
 
-    if (loading) {
-        return <div className="text-center mt-32">Cargando experiencias...</div>;
-    }
-
-    if (experiences.length === 0) {
-        return <div className="text-center text-gray-500 dark:text-gray-400 mt-32">Aún no has añadido experiencias laborales.</div>;
-    }
-
     return (
-        <section id="experiencia" className="mt-32">
-            <div className="flex items-center mb-8">
+        <section className="mt-32">
+            <div id="experiencia" className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full bg-white dark:bg-gray-950 flex items-center justify-center">
                     <svg
                         className="size-8"
@@ -106,27 +97,38 @@ export default function Experience() {
                 <h2 className="text-3xl font-bold">Experiencia laboral</h2>
             </div>
 
-            <div className="relative">
-                <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
+            {loading ? (
+                <div className="text-center">Cargando experiencias...</div>
+            ) : experiences.length === 0 ? (
+                <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido experiencias laborales.</div>
+            ) : (
+                <div className="relative">
+                    {/* Línea vertical */}
+                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
 
-                {experiences.map((job, index) => (
-                    <div key={index} className="flex flex-col md:flex-row mb-10 relative group">
-                        <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 group-hover:scale-125 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>
+                    {/* Mapeo de la experiencia */}
+                    {experiences.map((job, index) => (
+                        <div key={index} className="flex flex-col md:flex-row mb-10 relative group">
+                            {/* Círculo de la línea de tiempo */}
+                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 group-hover:scale-125 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>
 
-                        <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
-                            <time className="text-sm text-gray-500 dark:text-gray-400">
-                                {job.start_date} - {job.end_date.toLowerCase() === "Actualidad" ? "Actualmente" : job.end_date}
-                            </time>
+                            {/* Columna de las fechas */}
+                            <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
+                                <time className="text-sm text-gray-500 dark:text-gray-400">
+                                    {job.start_date} - {job.end_date.toLowerCase() === "actualidad" ? "Actualmente" : job.end_date}
+                                </time>
+                            </div>
+
+                            {/* Columna de los detalles */}
+                            <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
+                                <h3 className="text-xl font-semibold">{job.job_title}</h3>
+                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
+                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
+                            </div>
                         </div>
-
-                        <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
-                            <h3 className="text-xl font-semibold">{job.job_title}</h3>
-                            <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
-                            <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </section>
     );
 }
