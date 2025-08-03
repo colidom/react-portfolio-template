@@ -7,9 +7,9 @@ export default function Hero() {
                 <br />
             </h1>
             <p className="mt-4 text-gray-400 text-lg">
-                <span className="text-yellow-200">Desarrollador de Software y Administrador de Sistemas.</span> Con experiencia en desarrollo web,
-                gestión IT e IoT, he trabajado con tecnologías como PHP, JavaScript y Python, siempre buscando la innovación y el aprendizaje
-                continuo.
+                <span className="text-yellow-500 font-bold dark:text-yellow-200">Desarrollador de Software y Administrador de Sistemas</span>. Con
+                experiencia en desarrollo web, gestión IT e IoT, he trabajado con tecnologías como PHP, JavaScript y Python, siempre buscando la
+                innovación y el aprendizaje continuo.
             </p>
 
             <a
