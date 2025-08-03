@@ -12,7 +12,57 @@ export default function Experience() {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-                setExperiences(data);
+
+                const parseDate = (dateString) => {
+                    const normalizedDate = dateString.toLowerCase();
+                    if (normalizedDate.includes("actualidad") || normalizedDate.includes("actualmente")) {
+                        // Las experiencias actuales siempre van al principio
+                        return new Date(2100, 0, 1);
+                    }
+                    const [monthStr, yearStr] = dateString.split(" ");
+                    const months = {
+                        enero: 0,
+                        febrero: 1,
+                        marzo: 2,
+                        abril: 3,
+                        mayo: 4,
+                        junio: 5,
+                        julio: 6,
+                        agosto: 7,
+                        septiembre: 8,
+                        octubre: 9,
+                        noviembre: 10,
+                        diciembre: 11,
+                        "ene.": 0,
+                        "feb.": 1,
+                        "mar.": 2,
+                        "abr.": 3,
+                        "may.": 4,
+                        "jun.": 5,
+                        "jul.": 6,
+                        "ago.": 7,
+                        "sep.": 8,
+                        "oct.": 9,
+                        "nov.": 10,
+                        "dic.": 11,
+                    };
+                    const monthIndex = months[monthStr.toLowerCase().replace(".", "")]; // Manejamos 'ene.' y 'ene'
+                    const year = parseInt(yearStr);
+
+                    if (isNaN(monthIndex) || isNaN(year)) {
+                        console.error("Failed to parse date:", dateString);
+                        return new Date(0);
+                    }
+                    return new Date(year, monthIndex, 1);
+                };
+
+                const sortedData = data.sort((a, b) => {
+                    const dateA = parseDate(a.end_date);
+                    const dateB = parseDate(b.end_date);
+                    return dateB - dateA;
+                });
+
+                setExperiences(sortedData);
             } catch (error) {
                 console.error("Failed to fetch experiences:", error);
             } finally {
@@ -27,14 +77,12 @@ export default function Experience() {
         return <div className="text-center mt-32">Cargando experiencias...</div>;
     }
 
-    // Mostramos un mensaje si no hay experiencias
     if (experiences.length === 0) {
         return <div className="text-center text-gray-500 dark:text-gray-400 mt-32">Aún no has añadido experiencias laborales.</div>;
     }
 
     return (
         <section id="experiencia" className="mt-32">
-            {/* Título e ícono de la sección */}
             <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full bg-white dark:bg-gray-950 flex items-center justify-center">
                     <svg
@@ -58,25 +106,19 @@ export default function Experience() {
                 <h2 className="text-3xl font-bold">Experiencia laboral</h2>
             </div>
 
-            {/* Contenedor principal de la línea de tiempo */}
             <div className="relative">
-                {/* Línea vertical. Ahora se posiciona de forma más precisa para móvil y escritorio */}
                 <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
 
-                {/* Mapeo de la experiencia */}
                 {experiences.map((job, index) => (
                     <div key={index} className="flex flex-col md:flex-row mb-10 relative group">
-                        {/* Círculo de la línea de tiempo */}
                         <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 group-hover:scale-125 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>
 
-                        {/* Columna de las fechas */}
                         <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                             <time className="text-sm text-gray-500 dark:text-gray-400">
-                                {job.start_date} - {job.end_date}
+                                {job.start_date} - {job.end_date.toLowerCase() === "Actualidad" ? "Actualmente" : job.end_date}
                             </time>
                         </div>
 
-                        {/* Columna de los detalles */}
                         <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
                             <h3 className="text-xl font-semibold">{job.job_title}</h3>
                             <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
