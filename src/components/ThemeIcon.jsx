@@ -1,6 +1,3 @@
-import React from "react";
-
-// Este es el componente de ícono del tema con animación
 export default function ThemeIcon({ selected }) {
     return (
         <div className="relative w-5 h-5 flex items-center">
@@ -13,7 +10,6 @@ export default function ThemeIcon({ selected }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                // CAMBIO: Se añade un grosor de línea para que sea consistente
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -31,7 +27,6 @@ export default function ThemeIcon({ selected }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                // CAMBIO: Se añade un grosor de línea para que sea consistente
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -48,7 +43,6 @@ export default function ThemeIcon({ selected }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                // CAMBIO: Se añade el grosor de línea a la etiqueta principal para mantener la consistencia
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
