@@ -8,7 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
     return (
-        <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
+        <div className="bg-gradient-to-b from-gray-50 to-gray-200 dark:from-gray-950 dark:to-gray-800 text-gray-900 dark:text-white min-h-screen">
             <Header />
             <main className="px-6 md:px-20 max-w-5xl mx-auto space-y-32 pt-20">
                 <Hero />

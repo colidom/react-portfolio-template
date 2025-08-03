@@ -1,7 +1,6 @@
-// src/components/Hero.jsx
 export default function Hero() {
     return (
-        <section className="bg-white text-gray-900 dark:bg-gray-950 dark:text-white py-20">
+        <section className="py-20 text-gray-900 dark:text-white">
             <h1 className="text-4xl md:text-6xl font-bold leading-tight">
                 Hola, soy <span className="text-blue-500">Carlos Oliva</span>
                 <br />
