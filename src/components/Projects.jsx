@@ -27,8 +27,6 @@ export default function Projects() {
         };
 
         fetchProjects();
-        console.log("Fetching projects from:", `${process.env.REACT_APP_BACKEND_URL}/projects`);
-        console.log("Projects data fetched:", projectsData);
     }, []);
 
     const formatDate = (dateString) => {
