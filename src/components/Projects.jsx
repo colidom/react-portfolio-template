@@ -9,7 +9,7 @@ export default function Projects() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetch(`${process.env.APP_BACKEND_URL}/projects`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/projects`);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
@@ -27,6 +27,8 @@ export default function Projects() {
         };
 
         fetchProjects();
+        console.log("Fetching projects from:", `${process.env.REACT_APP_BACKEND_URL}/projects`);
+        console.log("Projects data fetched:", projectsData);
     }, []);
 
     const formatDate = (dateString) => {
