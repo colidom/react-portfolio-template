@@ -32,7 +32,7 @@ export default function About() {
                     <img
                         src="/avatar.jpg"
                         alt="Foto de perfil"
-                        className="w-full h-auto rounded-lg shadow-lg rotate-2 border-2 border-white dark:border-gray-800"
+                        className="w-full h-auto rounded-lg shadow-lg border-2 border-white dark:border-gray-800"
                     />
                 </div>
 
