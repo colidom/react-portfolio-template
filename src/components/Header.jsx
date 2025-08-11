@@ -60,7 +60,6 @@ export default function Header() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    // LÓGICA PARA DETECTAR LA SECCIÓN ACTIVA CON Intersection Observer API
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -72,7 +71,6 @@ export default function Header() {
                         if (!bestMatch) {
                             bestMatch = entry;
                         } else {
-                            // Determina cuál de las secciones intersectadas está más cerca del centro
                             const bestMatchCenter = bestMatch.boundingClientRect.y + bestMatch.boundingClientRect.height / 2;
                             const entryCenter = entry.boundingClientRect.y + entry.boundingClientRect.height / 2;
                             const viewportCenter = window.innerHeight / 2;
@@ -90,7 +88,7 @@ export default function Header() {
             },
             {
                 rootMargin: "-40% 0px -40% 0px",
-                threshold: 0.1, // Un umbral más bajo puede ayudar con secciones pequeñas
+                threshold: 0.1,
             }
         );
         const sections = document.querySelectorAll("section[id]");
@@ -128,12 +126,12 @@ export default function Header() {
                 ${isScrolled ? "backdrop-blur-md bg-white/80 dark:bg-gray-900/80 shadow-md" : "bg-transparent"}`}
         >
             <nav className="flex items-center px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200">
-                <a
-                    href="#inicio"
+                <button
                     onClick={(e) => handleNavClick(e, "inicio")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "inicio" ? "text-blue-500 font-semibold" : ""
                     }`}
+                    aria-label="Ir a la sección de Inicio"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -150,35 +148,35 @@ export default function Header() {
                         <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
                         <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                     </svg>
-                </a>
+                </button>
 
-                <a
-                    href="#experiencia"
+                <button
                     onClick={(e) => handleNavClick(e, "experiencia")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "experiencia" ? "text-blue-500 font-semibold" : ""
                     }`}
                 >
                     Experiencia
-                </a>
-                <a
-                    href="#proyectos"
+                </button>
+
+                <button
                     onClick={(e) => handleNavClick(e, "proyectos")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "proyectos" ? "text-blue-500 font-semibold" : ""
                     }`}
                 >
                     Proyectos
-                </a>
-                <a
-                    href="#sobre-mi"
+                </button>
+
+                <button
                     onClick={(e) => handleNavClick(e, "sobre-mi")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "sobre-mi" ? "text-blue-500 font-semibold" : ""
                     }`}
                 >
                     Sobre mí
-                </a>
+                </button>
+
                 <a href="mailto:colidom@outlook.com" className="px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500">
                     Contacto
                 </a>
