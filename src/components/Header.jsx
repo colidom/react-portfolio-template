@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ThemeIcon from "./ThemeIcon";
 
 const getSystemTheme = () => {
@@ -22,6 +22,7 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
+    const isClickScrolling = useRef(false);
 
     // Detección inicial del tema y aplicación
     useEffect(() => {
@@ -67,6 +68,7 @@ export default function Header() {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
+                if (isClickScrolling.current) return;
                 const visibleSection = entries.find((entry) => entry.isIntersecting);
                 if (visibleSection) {
                     setActiveSection(visibleSection.target.id);
@@ -99,8 +101,13 @@ export default function Header() {
     // Función para manejar el clic en la navegación
     const handleNavClick = (e, sectionId) => {
         e.preventDefault();
+        isClickScrolling.current = true;
         setActiveSection(sectionId);
         document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+
+        setTimeout(() => {
+            isClickScrolling.current = false;
+        }, 500);
     };
 
     return (
