@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import ThemeIcon from "./ThemeIcon"; // Importa el nuevo componente
+import ThemeIcon from "./ThemeIcon";
 
-// Función auxiliar para obtener el tema actual del sistema
 const getSystemTheme = () => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         return "dark";
@@ -9,7 +8,6 @@ const getSystemTheme = () => {
     return "light";
 };
 
-// Función para aplicar el tema al documento
 const applyTheme = (theme) => {
     const isDark = theme === "dark" || (theme === "system" && getSystemTheme() === "dark");
     if (isDark) {
@@ -20,10 +18,9 @@ const applyTheme = (theme) => {
 };
 
 export default function Header() {
-    const [theme, setTheme] = useState("system"); // Tema por defecto: sistema
+    const [theme, setTheme] = useState("system");
     const [menuOpen, setMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    // Estado para la sección activa
     const [activeSection, setActiveSection] = useState(null);
 
     // Detección inicial del tema y aplicación
@@ -42,7 +39,6 @@ export default function Header() {
                 applyTheme("system");
             }
         };
-
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
     }, [theme]);
@@ -71,14 +67,13 @@ export default function Header() {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActiveSection(entry.target.id);
-                    }
-                });
+                const visibleSection = entries.find((entry) => entry.isIntersecting);
+                if (visibleSection) {
+                    setActiveSection(visibleSection.target.id);
+                }
             },
             {
-                threshold: 0.5,
+                rootMargin: "-25% 0px -75% 0px",
             }
         );
         const sections = document.querySelectorAll("section[id]");
@@ -101,16 +96,22 @@ export default function Header() {
         system: "Sistema",
     };
 
+    // Función para manejar el clic en la navegación
+    const handleNavClick = (e, sectionId) => {
+        e.preventDefault();
+        setActiveSection(sectionId);
+        document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+    };
+
     return (
         <header
-            // CAMBIO: Se reestructura la clase para que el fondo base sea transparente
-            // y solo se añadan las clases de scroll cuando `isScrolled` es true.
             className={`fixed top-0 z-10 w-full flex justify-center items-center transition-all duration-300
                 ${isScrolled ? "backdrop-blur-md bg-white/80 dark:bg-gray-900/80 shadow-md" : "bg-transparent"}`}
         >
             <nav className="flex items-center px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200">
                 <a
                     href="#experiencia"
+                    onClick={(e) => handleNavClick(e, "experiencia")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "experiencia" ? "text-blue-500 font-semibold" : ""
                     }`}
@@ -119,6 +120,7 @@ export default function Header() {
                 </a>
                 <a
                     href="#proyectos"
+                    onClick={(e) => handleNavClick(e, "proyectos")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "proyectos" ? "text-blue-500 font-semibold" : ""
                     }`}
@@ -127,6 +129,7 @@ export default function Header() {
                 </a>
                 <a
                     href="#sobre-mi"
+                    onClick={(e) => handleNavClick(e, "sobre-mi")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
                         activeSection === "sobre-mi" ? "text-blue-500 font-semibold" : ""
                     }`}
