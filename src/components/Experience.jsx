@@ -91,8 +91,8 @@ export default function Experience() {
     }, []);
 
     return (
-        <section className="mt-32">
-            <div id="experiencia" className="flex items-center mb-8">
+        <section id="experiencia" className="mt-32">
+            <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full bg-white dark:bg-gray-950 flex items-center justify-center">
                     <svg
                         className="size-8"
