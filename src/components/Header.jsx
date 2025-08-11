@@ -1,3 +1,4 @@
+// src/components/Header.jsx
 import { useEffect, useState, useRef } from "react";
 import ThemeIcon from "./ThemeIcon";
 
@@ -60,7 +61,12 @@ export default function Header() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    // LÓGICA PARA DETECTAR LA SECCIÓN ACTIVA CON Intersection Observer API
     useEffect(() => {
+        // APLICAR UN rootMargin DIFERENTE PARA MÓVILES
+        const isMobile = window.innerWidth <= 768; // O el breakpoint que uses para móvil
+        const margin = isMobile ? "-20% 0px -20% 0px" : "-40% 0px -40% 0px";
+
         const observer = new IntersectionObserver(
             (entries) => {
                 if (isClickScrolling.current) return;
@@ -87,10 +93,11 @@ export default function Header() {
                 }
             },
             {
-                rootMargin: "-40% 0px -40% 0px",
+                rootMargin: margin,
                 threshold: 0.1,
             }
         );
+
         const sections = document.querySelectorAll("section[id]");
         sections.forEach((section) => observer.observe(section));
         return () => observer.disconnect();
