@@ -24,7 +24,6 @@ export default function Header() {
     const [activeSection, setActiveSection] = useState(null);
     const isClickScrolling = useRef(false);
 
-    // Detección inicial del tema y aplicación
     useEffect(() => {
         const storedTheme = localStorage.getItem("theme");
         const initialTheme = storedTheme || "system";
@@ -32,7 +31,6 @@ export default function Header() {
         applyTheme(initialTheme);
     }, []);
 
-    // Manejo de la preferencia del sistema en tiempo real
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
         const handler = () => {
@@ -44,7 +42,6 @@ export default function Header() {
         return () => mediaQuery.removeEventListener("change", handler);
     }, [theme]);
 
-    // Cerrar el menú si se hace clic fuera
     useEffect(() => {
         const listener = (e) => {
             if (!e.target.closest("#theme-toggle-btn") && !e.target.closest("#theme-menu")) {
@@ -55,7 +52,6 @@ export default function Header() {
         return () => document.removeEventListener("click", listener);
     }, []);
 
-    // Detectar el scroll para cambiar el estilo del header
     useEffect(() => {
         const onScroll = () => {
             setIsScrolled(window.scrollY > 10);
@@ -69,13 +65,32 @@ export default function Header() {
         const observer = new IntersectionObserver(
             (entries) => {
                 if (isClickScrolling.current) return;
-                const visibleSection = entries.find((entry) => entry.isIntersecting);
-                if (visibleSection) {
-                    setActiveSection(visibleSection.target.id);
+
+                let bestMatch = null;
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        if (!bestMatch) {
+                            bestMatch = entry;
+                        } else {
+                            // Determina cuál de las secciones intersectadas está más cerca del centro
+                            const bestMatchCenter = bestMatch.boundingClientRect.y + bestMatch.boundingClientRect.height / 2;
+                            const entryCenter = entry.boundingClientRect.y + entry.boundingClientRect.height / 2;
+                            const viewportCenter = window.innerHeight / 2;
+
+                            if (Math.abs(entryCenter - viewportCenter) < Math.abs(bestMatchCenter - viewportCenter)) {
+                                bestMatch = entry;
+                            }
+                        }
+                    }
+                });
+
+                if (bestMatch) {
+                    setActiveSection(bestMatch.target.id);
                 }
             },
             {
-                rootMargin: "-25% 0px -75% 0px",
+                rootMargin: "-40% 0px -40% 0px",
+                threshold: 0.1, // Un umbral más bajo puede ayudar con secciones pequeñas
             }
         );
         const sections = document.querySelectorAll("section[id]");
@@ -83,7 +98,6 @@ export default function Header() {
         return () => observer.disconnect();
     }, []);
 
-    // Manejar el cambio de tema
     const handleChange = (newTheme) => {
         localStorage.setItem("theme", newTheme);
         setTheme(newTheme);
@@ -91,14 +105,12 @@ export default function Header() {
         setMenuOpen(false);
     };
 
-    // Objeto para traducir las opciones de tema
     const themeTranslations = {
         light: "Claro",
         dark: "Oscuro",
         system: "Sistema",
     };
 
-    // Función para manejar el clic en la navegación
     const handleNavClick = (e, sectionId) => {
         e.preventDefault();
         isClickScrolling.current = true;
@@ -116,6 +128,30 @@ export default function Header() {
                 ${isScrolled ? "backdrop-blur-md bg-white/80 dark:bg-gray-900/80 shadow-md" : "bg-transparent"}`}
         >
             <nav className="flex items-center px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200">
+                <a
+                    href="#inicio"
+                    onClick={(e) => handleNavClick(e, "inicio")}
+                    className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
+                        activeSection === "inicio" ? "text-blue-500 font-semibold" : ""
+                    }`}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="size-5"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                    </svg>
+                </a>
+
                 <a
                     href="#experiencia"
                     onClick={(e) => handleNavClick(e, "experiencia")}
@@ -147,7 +183,6 @@ export default function Header() {
                     Contacto
                 </a>
 
-                {/* Botón tema */}
                 <div className="relative ml-1 mr-1">
                     <button
                         id="theme-toggle-btn"
