@@ -56,8 +56,26 @@ export default function Experience() {
                 };
 
                 const sortedData = data.sort((a, b) => {
-                    const dateA = parseDate(a.end_date);
-                    const dateB = parseDate(b.end_date);
+                    const endA = a.end_date.toLowerCase();
+                    const endB = b.end_date.toLowerCase();
+
+                    const isCurrentA = endA.includes("actualidad") || endA.includes("actualmente");
+                    const isCurrentB = endB.includes("actualidad") || endB.includes("actualmente");
+
+                    // Si ambos trabajos están en curso, los ordenamos por la fecha de inicio
+                    if (isCurrentA && isCurrentB) {
+                        const dateA = parseDate(a.start_date);
+                        const dateB = parseDate(b.start_date);
+                        return dateB - dateA; // ✅ Del más reciente al más antiguo
+                    }
+
+                    // Si solo uno está en curso, ese va primero
+                    if (isCurrentA) return -1;
+                    if (isCurrentB) return 1;
+
+                    // Si ninguno está en curso, los ordenamos por la fecha de finalización
+                    const dateA = parseDate(endA);
+                    const dateB = parseDate(endB);
                     return dateB - dateA;
                 });
 
