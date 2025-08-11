@@ -41,7 +41,7 @@ export default function About() {
                     <p class="text-lg text-gray-700 dark:text-gray-300 mb-4 text-justify">
                         Desarrollador de software y administrador de sistemas con experiencia en desarrollo web, gestión de IT, Internet de las Cosas
                         (IoT) y análisis y soporte funcional de aplicaciones. He trabajado en proyectos de alto impacto utilizando tecnologías como{" "}
-                        <span class="text-yellow-500 font-bold">PHP, JavaScript, Python</span>, y frameworks como
+                        <span class="text-yellow-500 font-bold">PHP, JavaScript, Python</span>, y frameworks como{" "}
                         <span class="text-yellow-500 font-bold">Laravel, FastAPI</span> y <span class="text-yellow-500 font-bold">Django</span>.
                         También cuento con experiencia en soluciones de e-commerce con <span class="text-yellow-500 font-bold">Prestashop</span> y{" "}
                         <span class="text-yellow-500 font-bold">WooCommerce</span>.
