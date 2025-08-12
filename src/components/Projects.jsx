@@ -42,7 +42,7 @@ export default function Projects() {
     return (
         <section id="proyectos" className="mt-32">
             <div className="flex items-center mb-8">
-                <div className="mr-4 w-8 h-8 rounded-full bg-white dark:bg-gray-950 flex items-center justify-center">
+                <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
                     <svg
                         className="size-8 text-gray-800 dark:text-gray-200"
                         xmlns="http://www.w3.org/2000/svg"

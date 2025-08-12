@@ -5,7 +5,7 @@ export default function About() {
         <section id="sobre-mi" className="mt-32">
             {/* Título e ícono de la sección */}
             <div className="flex items-center mb-8">
-                <div className="mr-4 w-8 h-8 rounded-full bg-white dark:bg-gray-950 flex items-center justify-center">
+                <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
                     <svg
                         className="size-8"
                         width="24"
