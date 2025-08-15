@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { IoCodeWorking } from "react-icons/io5";
 
 export default function Projects() {
     const [projectsData, setProjectsData] = useState([]);
@@ -43,23 +44,7 @@ export default function Projects() {
         <section id="proyectos" className="mt-32">
             <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <svg
-                        className="size-8 text-gray-800 dark:text-gray-200"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M7 8l-4 4l4 4"></path>
-                        <path d="M17 8l4 4l-4 4"></path>
-                        <path d="M14 4l-4 16"></path>
-                    </svg>
+                    <IoCodeWorking className="size-5" />
                 </div>
                 <h2 className="text-3xl font-bold">Proyectos</h2>
             </div>

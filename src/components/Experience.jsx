@@ -15,7 +15,7 @@ import {
     SiJquery,
     SiBootstrap,
 } from "react-icons/si";
-import { MdWork } from "react-icons/md";
+import { MdWorkOutline } from "react-icons/md";
 import { BsQuestionLg } from "react-icons/bs";
 import { BiLogoPostgresql } from "react-icons/bi";
 import { FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
@@ -132,7 +132,7 @@ export default function Experience() {
         <section id="experiencia" className="mt-32">
             <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <MdWork className="size-5" />
+                    <MdWorkOutline className="size-5" />
                 </div>
                 <h2 className="text-3xl font-bold">Experiencia laboral</h2>
             </div>
