@@ -1,4 +1,78 @@
 import React, { useState, useEffect } from "react";
+import {
+    SiReact,
+    SiTailwindcss,
+    SiPython,
+    SiPostgresql,
+    SiVercel,
+    SiRender,
+    SiGit,
+    SiGithub,
+    SiDocker,
+    SiHtml5,
+    SiCss3,
+    SiJavascript,
+    SiFastapi,
+    SiSqlalchemy,
+    SiJsonwebtokens,
+    SiSpring,
+    SiHibernate,
+    SiMqtt,
+    SiPhp,
+    SiWoocommerce,
+    SiPrestashop,
+    SiMysql,
+    SiJquery,
+    SiBootstrap,
+} from "react-icons/si";
+import { FaCode, FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
+import { IoHardwareChip, IoFlask } from "react-icons/io5";
+import { BsQuestionLg } from "react-icons/bs";
+import { MdWork } from "react-icons/md";
+import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
+
+const techIcons = {
+    React: <SiReact className="size-5" />,
+    TailwindCSS: <SiTailwindcss className="size-5" />,
+    Python: <SiPython className="size-5" />,
+    PostgreSQL: <SiPostgresql className="size-5" />,
+    Vercel: <SiVercel className="size-5" />,
+    Render: <SiRender className="size-5" />,
+    Git: <SiGit className="size-5" />,
+    GitHub: <SiGithub className="size-5" />,
+    Docker: <SiDocker className="size-5" />,
+    HTML5: <SiHtml5 className="size-5" />,
+    CSS3: <SiCss3 className="size-5" />,
+    JavaScript: <SiJavascript className="size-5" />,
+    FastAPI: <SiFastapi className="size-5" />,
+    SQLAlchemy: <SiSqlalchemy className="size-5" />,
+    JWT: <SiJsonwebtokens className="size-5" />,
+    Spring: <SiSpring className="size-5" />,
+    JSP: <FaJava className="size-5" />,
+    Java: <FaJava className="size-5" />,
+    Hibernate: <SiHibernate className="size-5" />,
+    MQTT: <SiMqtt className="size-5" />,
+    Scripting: <FaCode className="size-5" />,
+    PHP: <SiPhp className="size-5" />,
+    WooCommerce: <SiWoocommerce className="size-5" />,
+    MySQL: <SiMysql className="size-5" />,
+    SiPostgresql: <SiPostgresql className="size-5" />,
+    jQuery: <SiJquery className="size-5" />,
+    Bootstrap: <SiBootstrap className="size-5" />,
+    PrestaShop: <SiPrestashop className="size-5" />,
+    REST: <FaCloud className="size-5" />,
+    SOAP: <FaCloud className="size-5" />,
+    IoT: <IoHardwareChip className="size-5" />,
+    SOA: <FlowData size={20} />,
+    "IBM Integration Bus": <IbmMq size={20} />,
+    "WebSphere Message Broker": <MessageQueue size={20} />,
+    "Formación en TI": <FaGraduationCap className="size-5" />,
+    "Innovación en Ciencia": <IoFlask className="size-5" />,
+};
+
+const getTechIcon = (techName) => {
+    return techIcons[techName] || <BsQuestionLg className="size-5 text-gray-400" />;
+};
 
 export default function Experience() {
     const [experiences, setExperiences] = useState([]);
@@ -56,27 +130,10 @@ export default function Experience() {
                 };
 
                 const sortedData = data.sort((a, b) => {
-                    const endA = a.end_date.toLowerCase();
-                    const endB = b.end_date.toLowerCase();
-
-                    const isCurrentA = endA.includes("actualidad") || endA.includes("actualmente");
-                    const isCurrentB = endB.includes("actualidad") || endB.includes("actualmente");
-
-                    // Si ambos trabajos están en curso, los ordenamos por la fecha de inicio
-                    if (isCurrentA && isCurrentB) {
-                        const dateA = parseDate(a.start_date);
-                        const dateB = parseDate(b.start_date);
-                        return dateB - dateA; // ✅ Del más reciente al más antiguo
-                    }
-
-                    // Si solo uno está en curso, ese va primero
-                    if (isCurrentA) return -1;
-                    if (isCurrentB) return 1;
-
-                    // Si ninguno está en curso, los ordenamos por la fecha de finalización
-                    const dateA = parseDate(endA);
-                    const dateB = parseDate(endB);
-                    return dateB - dateA;
+                    const dateA = parseDate(a.end_date);
+                    const dateB = parseDate(b.end_date);
+                    if (dateA - dateB !== 0) return dateB - dateA;
+                    return parseDate(b.start_date) - parseDate(a.start_date);
                 });
 
                 setExperiences(sortedData);
@@ -92,51 +149,63 @@ export default function Experience() {
 
     return (
         <section id="experiencia" className="mt-32">
+            {" "}
             <div className="flex items-center mb-8">
+                {" "}
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
-                        />
-                    </svg>
+                    <MdWork className="size-5" />{" "}
                 </div>
-                <h2 className="text-3xl font-bold">Experiencia laboral</h2>
-            </div>
-
+                <h2 className="text-3xl font-bold">Experiencia laboral</h2>{" "}
+            </div>{" "}
             {loading ? (
                 <div className="text-center">Cargando experiencias...</div>
             ) : experiences.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido experiencias laborales.</div>
             ) : (
                 <div className="relative">
-                    {/* Línea vertical */}
-                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
-
-                    {/* Mapeo de la experiencia */}
+                    {" "}
+                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>{" "}
                     {experiences.map((job, index) => (
-                        <div key={index} className="flex flex-col md:flex-row mb-10 relative group">
-                            {/* Círculo de la línea de tiempo */}
-                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 group-hover:scale-125 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>
-
-                            {/* Columna de las fechas */}
+                        <div key={index} className="flex flex-col md:flex-row mb-10 relative">
+                            {" "}
+                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>{" "}
                             <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
+                                {" "}
                                 <time className="text-sm text-gray-500 dark:text-gray-400">
-                                    {job.start_date} - {job.end_date.toLowerCase() === "actualidad" ? "Actualmente" : job.end_date}
-                                </time>
-                            </div>
-
-                            {/* Columna de los detalles */}
+                                    {job.start_date} - {job.end_date.toLowerCase().includes("actual") ? "Actualmente" : job.end_date}{" "}
+                                </time>{" "}
+                            </div>{" "}
                             <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
                                 <h3 className="text-xl font-semibold">{job.job_title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
-                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
-                            </div>
+                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>{" "}
+                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>{" "}
+                                {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
+                                    <div className="mt-4 flex flex-wrap gap-3">
+                                        {" "}
+                                        {job.technologies.map((tech, techIndex) => {
+                                            const IconComponent = getTechIcon(tech);
+                                            return IconComponent ? (
+                                                <div
+                                                    key={techIndex}
+                                                    className="relative flex items-center justify-center transition-colors duration-200 group"
+                                                >
+                                                    {" "}
+                                                    {React.cloneElement(IconComponent, {
+                                                        className: `${IconComponent.props.className} hover:text-blue-500`,
+                                                    })}{" "}
+                                                    <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
+                                                        {tech}{" "}
+                                                    </span>{" "}
+                                                </div>
+                                            ) : null;
+                                        })}{" "}
+                                    </div>
+                                )}{" "}
+                            </div>{" "}
                         </div>
-                    ))}
+                    ))}{" "}
                 </div>
-            )}
+            )}{" "}
         </section>
     );
 }
