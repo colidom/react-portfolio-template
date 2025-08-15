@@ -54,7 +54,7 @@ const techIcons = {
     MQTT: <SiMqtt className="size-5" />,
     Scripting: <IoTerminalSharp className="size-5" />,
     PHP: <SiPhp className="size-5" />,
-    WooCommerce: <SiWoocommerce className="size-5" />,
+    WooCommerce: <SiWoocommerce className="size-10" />,
     MySQL: <SiMysql className="size-5" />,
     jQuery: <SiJquery className="size-5" />,
     Bootstrap: <SiBootstrap className="size-5" />,
@@ -148,63 +148,56 @@ export default function Experience() {
 
     return (
         <section id="experiencia" className="mt-32">
-            {" "}
             <div className="flex items-center mb-8">
-                {" "}
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <MdWork className="size-5" />{" "}
+                    <MdWork className="size-5" />
                 </div>
-                <h2 className="text-3xl font-bold">Experiencia laboral</h2>{" "}
-            </div>{" "}
+                <h2 className="text-3xl font-bold">Experiencia laboral</h2>
+            </div>
             {loading ? (
                 <div className="text-center">Cargando experiencias...</div>
             ) : experiences.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido experiencias laborales.</div>
             ) : (
                 <div className="relative">
-                    {" "}
-                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>{" "}
+                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
                     {experiences.map((job, index) => (
                         <div key={index} className="flex flex-col md:flex-row mb-10 relative">
-                            {" "}
-                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 md:left-1/3 md:ml-[-0.5rem]"></div>{" "}
+                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 hover:scale-125 md:left-1/3 md:ml-[-0.5rem]"></div>
                             <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
-                                {" "}
                                 <time className="text-sm text-gray-500 dark:text-gray-400">
-                                    {job.start_date} - {job.end_date.toLowerCase().includes("actual") ? "Actualmente" : job.end_date}{" "}
-                                </time>{" "}
-                            </div>{" "}
+                                    {job.start_date} - {job.end_date.toLowerCase().includes("actual") ? "Actualmente" : job.end_date}
+                                </time>
+                            </div>
                             <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
                                 <h3 className="text-xl font-semibold">{job.job_title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>{" "}
-                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>{" "}
+                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
+                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
                                 {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
                                     <div className="mt-4 flex flex-wrap gap-3">
-                                        {" "}
                                         {job.technologies.map((tech, techIndex) => {
                                             const IconComponent = getTechIcon(tech);
                                             return IconComponent ? (
                                                 <div
                                                     key={techIndex}
-                                                    className="relative flex items-center justify-center transition-colors duration-200 group"
+                                                    className="relative flex items-center justify-center transition-colors duration-200 group hover:scale-125"
                                                 >
-                                                    {" "}
                                                     {React.cloneElement(IconComponent, {
-                                                        className: `${IconComponent.props.className} hover:text-blue-400`,
-                                                    })}{" "}
+                                                        className: `${IconComponent.props.className || ""} hover:text-blue-500`,
+                                                    })}
                                                     <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
-                                                        {tech}{" "}
-                                                    </span>{" "}
+                                                        {tech}
+                                                    </span>
                                                 </div>
                                             ) : null;
-                                        })}{" "}
+                                        })}
                                     </div>
-                                )}{" "}
-                            </div>{" "}
+                                )}
+                            </div>
                         </div>
-                    ))}{" "}
+                    ))}
                 </div>
-            )}{" "}
+            )}
         </section>
     );
 }
