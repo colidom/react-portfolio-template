@@ -3,7 +3,6 @@ import {
     SiReact,
     SiTailwindcss,
     SiPython,
-    SiPostgresql,
     SiVercel,
     SiRender,
     SiGit,
@@ -25,17 +24,18 @@ import {
     SiJquery,
     SiBootstrap,
 } from "react-icons/si";
-import { FaCode, FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
-import { IoHardwareChip, IoFlask } from "react-icons/io5";
-import { BsQuestionLg } from "react-icons/bs";
 import { MdWork } from "react-icons/md";
+import { BsQuestionLg } from "react-icons/bs";
+import { BiLogoPostgresql } from "react-icons/bi";
+import { IoHardwareChip, IoFlask } from "react-icons/io5";
 import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
+import { FaCode, FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
 
 const techIcons = {
     React: <SiReact className="size-5" />,
     TailwindCSS: <SiTailwindcss className="size-5" />,
     Python: <SiPython className="size-5" />,
-    PostgreSQL: <SiPostgresql className="size-5" />,
+    PostgreSQL: <BiLogoPostgresql className="size-6" />,
     Vercel: <SiVercel className="size-5" />,
     Render: <SiRender className="size-5" />,
     Git: <SiGit className="size-5" />,
@@ -56,7 +56,6 @@ const techIcons = {
     PHP: <SiPhp className="size-5" />,
     WooCommerce: <SiWoocommerce className="size-5" />,
     MySQL: <SiMysql className="size-5" />,
-    SiPostgresql: <SiPostgresql className="size-5" />,
     jQuery: <SiJquery className="size-5" />,
     Bootstrap: <SiBootstrap className="size-5" />,
     PrestaShop: <SiPrestashop className="size-5" />,
