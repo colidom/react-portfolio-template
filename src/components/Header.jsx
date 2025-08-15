@@ -22,7 +22,7 @@ export default function Header() {
     const [theme, setTheme] = useState("system");
     const [menuOpen, setMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState(null);
+    const [activeSection, setActiveSection] = useState("inicio");
     const isClickScrolling = useRef(false);
 
     useEffect(() => {
@@ -63,38 +63,38 @@ export default function Header() {
 
     // LÓGICA PARA DETECTAR LA SECCIÓN ACTIVA CON Intersection Observer API
     useEffect(() => {
-        // APLICAR UN rootMargin DIFERENTE PARA MÓVILES
-        const isMobile = window.innerWidth <= 768; // O el breakpoint que uses para móvil
-        const margin = isMobile ? "-20% 0px -20% 0px" : "-40% 0px -40% 0px";
+        // Lógica para ajustar el rootMargin según el dispositivo
+        const isMobile = window.innerWidth <= 768;
+        const margin = isMobile ? "-20% 0px -20% 0px" : "-25% 0px -25% 0px";
 
         const observer = new IntersectionObserver(
             (entries) => {
                 if (isClickScrolling.current) return;
 
                 let bestMatch = null;
+                let maxArea = 0;
+
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        if (!bestMatch) {
-                            bestMatch = entry;
-                        } else {
-                            const bestMatchCenter = bestMatch.boundingClientRect.y + bestMatch.boundingClientRect.height / 2;
-                            const entryCenter = entry.boundingClientRect.y + entry.boundingClientRect.height / 2;
-                            const viewportCenter = window.innerHeight / 2;
+                        const intersectionRect = entry.intersectionRect;
+                        const area = intersectionRect.width * intersectionRect.height;
 
-                            if (Math.abs(entryCenter - viewportCenter) < Math.abs(bestMatchCenter - viewportCenter)) {
-                                bestMatch = entry;
-                            }
+                        if (area > maxArea) {
+                            maxArea = area;
+                            bestMatch = entry;
                         }
                     }
                 });
 
                 if (bestMatch) {
                     setActiveSection(bestMatch.target.id);
+                } else if (window.scrollY === 0) {
+                    setActiveSection("inicio");
                 }
             },
             {
                 rootMargin: margin,
-                threshold: 0.1,
+                threshold: Array.from({ length: 101 }, (_, i) => i / 100),
             }
         );
 
@@ -124,7 +124,7 @@ export default function Header() {
 
         setTimeout(() => {
             isClickScrolling.current = false;
-        }, 500);
+        }, 1000);
     };
 
     return (
@@ -142,7 +142,6 @@ export default function Header() {
                 >
                     <MdHome className="size-5" />
                 </button>
-
                 <button
                     onClick={(e) => handleNavClick(e, "experiencia")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
@@ -151,7 +150,6 @@ export default function Header() {
                 >
                     Experiencia
                 </button>
-
                 <button
                     onClick={(e) => handleNavClick(e, "proyectos")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
@@ -160,7 +158,6 @@ export default function Header() {
                 >
                     Proyectos
                 </button>
-
                 <button
                     onClick={(e) => handleNavClick(e, "sobre-mi")}
                     className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
@@ -169,11 +166,9 @@ export default function Header() {
                 >
                     Sobre mí
                 </button>
-
                 <a href="mailto:colidom@outlook.com" className="px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500">
                     Contacto
                 </a>
-
                 <div className="relative ml-1 mr-1">
                     <button
                         id="theme-toggle-btn"
@@ -183,7 +178,6 @@ export default function Header() {
                     >
                         <ThemeIcon selected={theme} />
                     </button>
-
                     {menuOpen && (
                         <div
                             id="theme-menu"
