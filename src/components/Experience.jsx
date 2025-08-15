@@ -191,7 +191,7 @@ export default function Experience() {
                                                 >
                                                     {" "}
                                                     {React.cloneElement(IconComponent, {
-                                                        className: `${IconComponent.props.className} hover:text-blue-500`,
+                                                        className: `${IconComponent.props.className} hover:text-blue-400`,
                                                     })}{" "}
                                                     <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
                                                         {tech}{" "}
