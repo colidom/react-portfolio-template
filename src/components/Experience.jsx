@@ -27,9 +27,9 @@ import {
 import { MdWork } from "react-icons/md";
 import { BsQuestionLg } from "react-icons/bs";
 import { BiLogoPostgresql } from "react-icons/bi";
-import { IoHardwareChip, IoFlask } from "react-icons/io5";
+import { FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
 import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
-import { FaCode, FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
+import { IoHardwareChip, IoFlask, IoTerminalSharp } from "react-icons/io5";
 
 const techIcons = {
     React: <SiReact className="size-5" />,
@@ -52,7 +52,7 @@ const techIcons = {
     Java: <FaJava className="size-5" />,
     Hibernate: <SiHibernate className="size-5" />,
     MQTT: <SiMqtt className="size-5" />,
-    Scripting: <FaCode className="size-5" />,
+    Scripting: <IoTerminalSharp className="size-5" />,
     PHP: <SiPhp className="size-5" />,
     WooCommerce: <SiWoocommerce className="size-5" />,
     MySQL: <SiMysql className="size-5" />,
