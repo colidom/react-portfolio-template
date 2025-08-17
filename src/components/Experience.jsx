@@ -23,32 +23,32 @@ import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
 import { IoHardwareChip, IoFlask, IoTerminalSharp } from "react-icons/io5";
 
 const techIcons = {
-    Python: <SiPython className="size-5" />,
-    PostgreSQL: <BiLogoPostgresql className="size-6" />,
-    Git: <SiGit className="size-5" />,
-    HTML5: <SiHtml5 className="size-5" />,
-    CSS3: <SiCss3 className="size-5" />,
-    JavaScript: <SiJavascript className="size-5" />,
-    Spring: <SiSpring className="size-5" />,
-    JSP: <FaJava className="size-5" />,
-    Java: <FaJava className="size-5" />,
-    Hibernate: <SiHibernate className="size-5" />,
-    MQTT: <SiMqtt className="size-5" />,
-    Scripting: <IoTerminalSharp className="size-5" />,
-    PHP: <SiPhp className="size-5" />,
-    WooCommerce: <SiWoocommerce className="size-10" />,
-    MySQL: <SiMysql className="size-5" />,
-    jQuery: <SiJquery className="size-5" />,
-    Bootstrap: <SiBootstrap className="size-5" />,
-    PrestaShop: <SiPrestashop className="size-5" />,
-    REST: <FaCloud className="size-5" />,
-    SOAP: <FaCloud className="size-5" />,
-    IoT: <IoHardwareChip className="size-5" />,
-    SOA: <FlowData size={20} />,
-    "IBM Integration Bus": <IbmMq size={20} />,
-    "WebSphere Message Broker": <MessageQueue size={20} />,
-    "Formación en TI": <FaGraduationCap className="size-5" />,
-    "Innovación en Ciencia": <IoFlask className="size-5" />,
+    Python: <SiPython className="size-4 text-blue-500" />,
+    PostgreSQL: <BiLogoPostgresql className="size-6 text-blue-700" />,
+    Git: <SiGit className="size-5 text-orange-600" />,
+    HTML5: <SiHtml5 className="size-5 text-orange-600" />,
+    CSS3: <SiCss3 className="size-5 text-blue-600" />,
+    JavaScript: <SiJavascript className="size-4 text-yellow-400" />,
+    Spring: <SiSpring className="size-5 text-green-500" />,
+    JSP: <FaJava className="size-5 text-orange-400" />,
+    Java: <FaJava className="size-5 text-red-700" />,
+    Hibernate: <SiHibernate className="size-5 text-gray-700 dark:text-gray-300" />,
+    MQTT: <SiMqtt className="size-4 text-purple-600" />,
+    Scripting: <IoTerminalSharp className="size-5 text-gray-600 dark:text-gray-400" />,
+    PHP: <SiPhp className="size-5 text-purple-600" />,
+    WooCommerce: <SiWoocommerce className="size-10 text-purple-600" />,
+    MySQL: <SiMysql className="size-5 text-blue-600" />,
+    jQuery: <SiJquery className="size-5 text-blue-700" />,
+    Bootstrap: <SiBootstrap className="size-5 text-purple-500" />,
+    PrestaShop: <SiPrestashop className="size-5 text-red-600" />,
+    REST: <FaCloud className="size-5 text-blue-500" />,
+    SOAP: <FaCloud className="size-5 text-indigo-500" />,
+    IoT: <IoHardwareChip className="size-5 text-green-700 dark:text-green-700" />,
+    SOA: <FlowData size={20} className="text-gray-600 dark:text-gray-400" />,
+    "IBM Integration Bus": <IbmMq size={20} className="text-blue-700" />,
+    "WebSphere Message Broker": <MessageQueue size={20} className="text-blue-700" />,
+    "Formación en TI": <FaGraduationCap className="size-5 text-yellow-500" />,
+    "Innovación en Ciencia": <IoFlask className="size-5 text-lime-500" />,
 };
 
 const getTechIcon = (techName) => {
@@ -67,7 +67,6 @@ export default function Experience() {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-
                 const parseDate = (dateString) => {
                     const normalizedDate = dateString.toLowerCase();
                     if (normalizedDate.includes("actualidad") || normalizedDate.includes("actualmente")) {
@@ -102,21 +101,18 @@ export default function Experience() {
                     };
                     const monthIndex = months[monthStr.toLowerCase().replace(".", "")];
                     const year = parseInt(yearStr);
-
                     if (isNaN(monthIndex) || isNaN(year)) {
                         console.error("Failed to parse date:", dateString);
                         return new Date(0);
                     }
                     return new Date(year, monthIndex, 1);
                 };
-
                 const sortedData = data.sort((a, b) => {
                     const dateA = parseDate(a.end_date);
                     const dateB = parseDate(b.end_date);
                     if (dateA - dateB !== 0) return dateB - dateA;
                     return parseDate(b.start_date) - parseDate(a.start_date);
                 });
-
                 setExperiences(sortedData);
             } catch (error) {
                 console.error("Failed to fetch experiences:", error);
@@ -124,10 +120,8 @@ export default function Experience() {
                 setLoading(false);
             }
         };
-
         fetchExperiences();
     }, []);
-
     return (
         <section id="experiencia" className="mt-32">
             <div className="flex items-center mb-8">
@@ -162,10 +156,10 @@ export default function Experience() {
                                             return IconComponent ? (
                                                 <div
                                                     key={techIndex}
-                                                    className="relative flex items-center justify-center transition-colors duration-200 group hover:scale-125"
+                                                    className="relative flex items-center justify-center transition-transform duration-200 group hover:scale-125"
                                                 >
                                                     {React.cloneElement(IconComponent, {
-                                                        className: `${IconComponent.props.className || ""} hover:text-blue-500`,
+                                                        className: IconComponent.props.className || "",
                                                     })}
                                                     <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
                                                         {tech}

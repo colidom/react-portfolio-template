@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { IoCodeWorking } from "react-icons/io5";
-import { FaReact, FaPython, FaGitAlt } from "react-icons/fa";
-import { SiFastapi, SiPostgresql, SiVercel, SiRender, SiSupabase, SiTailwindcss, SiJavascript } from "react-icons/si";
+import { FaReact, FaPython, FaGitAlt, FaVuejs } from "react-icons/fa";
+import {
+    SiFastapi,
+    SiPostgresql,
+    SiVercel,
+    SiLaravel,
+    SiRender,
+    SiSupabase,
+    SiTailwindcss,
+    SiJavascript,
+    SiMysql,
+    SiVite,
+    SiHtml5,
+} from "react-icons/si";
 
 const techIcons = {
-    react: <FaReact className="size-6 text-blue-500" />,
-    python: <FaPython className="size-6 text-yellow-500" />,
+    react: <FaReact className="size-6 text-cyan-400" />,
+    python: <FaPython className="size-6 text-blue-500" />,
     fastapi: <SiFastapi className="size-6 text-green-500" />,
     postgresql: <SiPostgresql className="size-6 text-blue-500" />,
     supabase: <SiSupabase className="size-6 text-green-600" />,
-    vercel: <SiVercel className="size-6 text-gray-800 dark:text-white" />,
+    vercel: <SiVercel className="size-6 text-black dark:text-white" />,
+    laravel: <SiLaravel className="size-6 text-red-500" />,
+    vue: <FaVuejs className="size-6 text-green-500" />,
+    mysql: <SiMysql className="size-6 text-blue-600" />,
+    vite: <SiVite className="size-6 text-purple-600" />,
+    html: <SiHtml5 className="size-6 text-orange-600" />,
     render: <SiRender className="size-6 text-lime-500" />,
-    git: <FaGitAlt className="size-6 text-red-500" />,
+    git: <FaGitAlt className="size-6 text-red-600" />,
     tailwindcss: <SiTailwindcss className="size-6 text-cyan-500" />,
     javascript: <SiJavascript className="size-6 text-yellow-400" />,
 };
