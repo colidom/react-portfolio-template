@@ -47,10 +47,7 @@ export default function Projects() {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-
-                // Ordenar los proyectos por la fecha de creación de forma descendente
                 const sortedProjects = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
                 setProjectsData(sortedProjects);
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
@@ -58,7 +55,6 @@ export default function Projects() {
                 setLoading(false);
             }
         };
-
         fetchProjects();
     }, []);
 
@@ -80,7 +76,6 @@ export default function Projects() {
                 </div>
                 <h2 className="text-3xl font-bold">Proyectos</h2>
             </div>
-
             {loading ? (
                 <div className="text-center">Cargando proyectos...</div>
             ) : projectsData.length === 0 ? (
@@ -88,24 +83,23 @@ export default function Projects() {
             ) : (
                 <div className="space-y-16">
                     {projectsData.map((project, index) => (
-                        <article key={project.id || index} className="flex flex-col md:flex-row items-start gap-8 group">
-                            <div className="flex-shrink-0 w-full md:w-1/3">
+                        <article
+                            key={project.id || index}
+                            className="flex flex-col md:flex-row items-start gap-8 group rounded-lg p-6 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl"
+                        >
+                            <div className="flex-shrink-0 w-full md:w-1/3 overflow-hidden rounded-lg">
                                 <img
                                     src={project.image || DUMMY_IMAGE_URL}
                                     alt={`Captura de pantalla de ${project.title}`}
-                                    className="w-full h-auto rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300"
+                                    className="w-full h-auto rounded-lg"
                                 />
                             </div>
-
                             <div className="flex-1 w-full md:w-2/3">
                                 <h3 className="text-2xl font-semibold mb-2">{project.title}</h3>
                                 <p className="text-gray-700 dark:text-gray-300 mb-2">{project.description}</p>
-
                                 {project.created_at && (
                                     <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">Creado el {formatDate(project.created_at)}</p>
                                 )}
-
-                                {/* Contenedor de las tecnologías */}
                                 {project.technologies && Array.isArray(project.technologies) && project.technologies.length > 0 && (
                                     <div className="mt-4 mb-4">
                                         <h4 className="text-base font-medium mb-2">Tecnologías utilizadas:</h4>
@@ -119,7 +113,6 @@ export default function Projects() {
                                         </div>
                                     </div>
                                 )}
-
                                 <div className="flex items-center space-x-4">
                                     {project.code_link && (
                                         <a
