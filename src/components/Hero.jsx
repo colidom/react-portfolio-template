@@ -1,3 +1,5 @@
+import { FaGithub, FaLinkedin, FaDownload } from "react-icons/fa";
+
 export default function Hero() {
     return (
         <section id="inicio" className="py-20 text-gray-900 dark:text-white">
@@ -11,33 +13,39 @@ export default function Hero() {
                 innovación y el aprendizaje continuo.
             </p>
 
-            <a
-                href="https://www.linkedin.com/in/cjod/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-8 px-4 py-2 text-blue-500 border-2 border-blue-500 font-bold rounded-lg transition-all duration-300 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+            <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
+                {/* Botón de LinkedIn */}
+                <a
+                    href="https://www.linkedin.com/in/cjod/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-blue-500 border-2 border-blue-500 font-bold rounded-lg transition-all duration-300 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
                 >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                    <path d="M8 11l0 5"></path>
-                    <path d="M8 8l0 .01"></path>
-                    <path d="M12 16l0 -5"></path>
-                    <path d="M16 16v-5"></path>
-                    <path d="M16 11l0 5"></path>
-                    <path d="M16 11a2 2 0 0 0 -2 -2a2 2 0 0 0 -2 2"></path>
-                </svg>
-                Ver perfil en LinkedIn
-            </a>
+                    <FaLinkedin className="w-5 h-5" />
+                    LinkedIn
+                </a>
+
+                {/* Botón de GitHub */}
+                <a
+                    href="https://github.com/colidom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-gray-500 border-2 border-gray-500 font-bold rounded-lg transition-all duration-300 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+                >
+                    <FaGithub className="w-5 h-5" />
+                    GitHub
+                </a>
+
+                {/* Botón para descargar el CV */}
+                <a
+                    href="/cv.pdf"
+                    download
+                    className="inline-flex items-center gap-2 px-4 py-2 text-green-500 border-2 border-green-500 font-bold rounded-lg transition-all duration-300 hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+                >
+                    <FaDownload className="w-5 h-5" />
+                    Descargar CV
+                </a>
+            </div>
         </section>
     );
 }
