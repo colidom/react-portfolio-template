@@ -4,6 +4,7 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import About from "./components/About";
 import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
                 <Footer />
                 <SpeedInsights />
             </main>
+            <ScrollToTopButton />
         </div>
     );
 }
