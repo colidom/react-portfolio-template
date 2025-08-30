@@ -122,6 +122,34 @@ export default function Experience() {
         };
         fetchExperiences();
     }, []);
+
+    const renderSkeletonLoader = () => (
+        <div className="relative">
+            <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
+            {[...Array(3)].map((_, index) => (
+                <div key={index} className="flex flex-col md:flex-row mb-10 relative animate-pulse">
+                    <div className="absolute w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 md:left-1/3 md:ml-[-0.5rem]"></div>
+                    <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
+                        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-2/3 mb-2 md:ml-auto"></div>
+                    </div>
+                    <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
+                        <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-4"></div>
+                        <div className="space-y-2">
+                            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+                            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
+                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
+                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
     return (
         <section id="experiencia" className="mt-32">
             <div className="flex items-center mb-8">
@@ -131,7 +159,7 @@ export default function Experience() {
                 <h2 className="text-3xl font-bold">Experiencia laboral</h2>
             </div>
             {loading ? (
-                <div className="text-center">Cargando experiencias...</div>
+                renderSkeletonLoader()
             ) : experiences.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido experiencias laborales.</div>
             ) : (
