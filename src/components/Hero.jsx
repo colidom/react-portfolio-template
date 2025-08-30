@@ -19,7 +19,7 @@ export default function Hero() {
                     href="https://www.linkedin.com/in/cjod/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 text-blue-500 border-2 border-blue-500 font-bold rounded-lg transition-all duration-300 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+                    className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-blue-500 border-2 border-blue-500 font-bold rounded-lg transition-all duration-300 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
                 >
                     <FaLinkedin className="w-5 h-5" />
                     LinkedIn
@@ -30,7 +30,7 @@ export default function Hero() {
                     href="https://github.com/colidom"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 text-gray-500 border-2 border-gray-500 font-bold rounded-lg transition-all duration-300 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+                    className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-gray-500 border-2 border-gray-500 font-bold rounded-lg transition-all duration-300 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
                 >
                     <FaGithub className="w-5 h-5" />
                     GitHub
@@ -40,7 +40,7 @@ export default function Hero() {
                 <a
                     href="/cv.pdf"
                     download
-                    className="inline-flex items-center gap-2 px-4 py-2 text-green-500 border-2 border-green-500 font-bold rounded-lg transition-all duration-300 hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+                    className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-green-500 border-2 border-green-500 font-bold rounded-lg transition-all duration-300 hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
                 >
                     <FaDownload className="w-5 h-5" />
                     Descargar CV
