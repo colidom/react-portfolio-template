@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     SiPython,
     SiGit,
@@ -58,6 +58,8 @@ const getTechIcon = (techName) => {
 export default function Experience() {
     const [experiences, setExperiences] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showAllExperiences, setShowAllExperiences] = useState(false);
+    const headingRef = useRef(null);
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -123,6 +125,17 @@ export default function Experience() {
         fetchExperiences();
     }, []);
 
+    const handleToggleExperiences = () => {
+        // Scroll siempre al encabezado
+        if (headingRef.current) {
+            headingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        // Después de un breve retraso, cambia el estado
+        setTimeout(() => {
+            setShowAllExperiences(!showAllExperiences);
+        }, 300);
+    };
+
     const renderSkeletonLoader = () => (
         <div className="relative">
             <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
@@ -150,13 +163,18 @@ export default function Experience() {
         </div>
     );
 
+    const experiencesToShow = showAllExperiences ? experiences : experiences.slice(0, 3);
+    const showToggleButton = experiences.length > 3;
+
     return (
         <section id="experiencia" className="mt-32">
             <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
                     <MdWorkOutline className="size-5" />
                 </div>
-                <h2 className="text-3xl font-bold">Experiencia laboral</h2>
+                <h2 ref={headingRef} className="text-3xl font-bold">
+                    Experiencia laboral
+                </h2>
             </div>
             {loading ? (
                 renderSkeletonLoader()
@@ -165,7 +183,7 @@ export default function Experience() {
             ) : (
                 <div className="relative">
                     <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
-                    {experiences.map((job, index) => (
+                    {experiencesToShow.map((job, index) => (
                         <div key={index} className="flex flex-col md:flex-row mb-10 relative">
                             <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 hover:scale-125 md:left-1/3 md:ml-[-0.5rem]"></div>
                             <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
@@ -200,6 +218,17 @@ export default function Experience() {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+            {showToggleButton && (
+                <div className="mt-8 text-center">
+                    <button
+                        onClick={handleToggleExperiences}
+                        className="flex items-center justify-center mx-auto text-blue-500 font-semibold px-4 py-2 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-200"
+                    >
+                        {showAllExperiences ? "Ver menos experiencias" : "Ver más experiencias"}
+                        <span className={`ml-2 transform transition-transform duration-300 ${showAllExperiences ? "rotate-180" : ""}`}>&#x25BC;</span>
+                    </button>
                 </div>
             )}
         </section>
