@@ -60,6 +60,7 @@ export default function Experience() {
     const [loading, setLoading] = useState(true);
     const [showAllExperiences, setShowAllExperiences] = useState(false);
     const headingRef = useRef(null);
+    const firstHiddenRef = useRef(null);
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -126,14 +127,24 @@ export default function Experience() {
     }, []);
 
     const handleToggleExperiences = () => {
-        // Scroll siempre al encabezado
-        if (headingRef.current) {
-            headingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (showAllExperiences) {
+            // Si vamos a "Mostrar menos", primero hacemos scroll al encabezado
+            if (headingRef.current) {
+                headingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            // Y luego, después de un retraso, ocultamos las experiencias adicionales
+            setTimeout(() => {
+                setShowAllExperiences(false);
+            }, 300);
+        } else {
+            // Si vamos a "Mostrar más", mostramos las experiencias y luego hacemos scroll
+            setShowAllExperiences(true);
+            setTimeout(() => {
+                if (firstHiddenRef.current) {
+                    firstHiddenRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }, 300);
         }
-        // Después de un breve retraso, cambia el estado
-        setTimeout(() => {
-            setShowAllExperiences(!showAllExperiences);
-        }, 300);
     };
 
     const renderSkeletonLoader = () => (
@@ -184,7 +195,15 @@ export default function Experience() {
                 <div className="relative">
                     <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
                     {experiencesToShow.map((job, index) => (
-                        <div key={index} className="flex flex-col md:flex-row mb-10 relative">
+                        <div
+                            key={index}
+                            className="flex flex-col md:flex-row mb-10 relative"
+                            ref={(el) => {
+                                if (index === 3) {
+                                    firstHiddenRef.current = el;
+                                }
+                            }}
+                        >
                             <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 hover:scale-125 md:left-1/3 md:ml-[-0.5rem]"></div>
                             <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                                 <time className="text-sm text-gray-500 dark:text-gray-400">
