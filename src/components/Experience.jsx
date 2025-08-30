@@ -226,7 +226,7 @@ export default function Experience() {
                         onClick={handleToggleExperiences}
                         className="flex items-center justify-center mx-auto text-blue-500 font-semibold px-4 py-2 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-200"
                     >
-                        {showAllExperiences ? "Ver menos experiencias" : "Ver más experiencias"}
+                        {showAllExperiences ? "Mostrar menos" : "Mostrar más"}
                         <span className={`ml-2 transform transition-transform duration-300 ${showAllExperiences ? "rotate-180" : ""}`}>&#x25BC;</span>
                     </button>
                 </div>
