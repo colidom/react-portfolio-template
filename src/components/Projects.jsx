@@ -119,7 +119,7 @@ export default function Projects() {
                     {projectsData.map((project, index) => (
                         <article
                             key={project.id || index}
-                            className="flex flex-col md:flex-row items-start gap-8 group rounded-lg p-6 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl"
+                            className="flex flex-col md:flex-row items-start gap-8 group rounded-lg p-6 transition-all duration-300 transform hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                         >
                             <div className="flex-shrink-0 w-full md:w-1/3 overflow-hidden rounded-lg">
                                 <img
@@ -139,7 +139,10 @@ export default function Projects() {
                                         <h4 className="text-base font-medium mb-2">Tecnologías utilizadas:</h4>
                                         <div className="flex flex-wrap gap-4">
                                             {project.technologies.map((tech, techIndex) => (
-                                                <div key={techIndex} className="flex flex-col items-center">
+                                                <div
+                                                    key={techIndex}
+                                                    className="flex flex-col items-center group transition-transform duration-200 hover:scale-125"
+                                                >
                                                     {techIcons[tech.toLowerCase()] || <div className="size-6" />}
                                                     <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{tech}</span>
                                                 </div>
