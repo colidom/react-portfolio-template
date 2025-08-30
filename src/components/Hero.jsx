@@ -66,7 +66,7 @@ export default function Hero() {
     );
 
     if (loading) {
-        return <section id="inicio">{renderSkeleton("Cargando tu información...")}</section>;
+        return <section id="inicio">{renderSkeleton()}</section>;
     }
 
     if (error || hasNoData) {
@@ -107,7 +107,7 @@ export default function Hero() {
                                         ? "text-gray-500 border-2 border-gray-500 hover:bg-gray-500 focus:ring-gray-500"
                                         : "text-green-500 border-2 border-green-500 hover:bg-green-500 focus:ring-green-500"
                                 }
-                            `}
+                                `}
                             >
                                 {IconComponent && <IconComponent className="w-5 h-5" />}
                                 {link.name}
