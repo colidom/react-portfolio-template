@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# 🚀 React Portfolio Template
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este repositorio contiene la **plantilla de frontend** para un portafolio personal, construida con **React** y **Tailwind CSS**.  
+La plantilla está diseñada para ser totalmente **dinámica**, consumiendo todos los datos (proyectos, habilidades, experiencia) desde una **API de backend separada**, lo que permite una fácil reutilización para cualquier desarrollador.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Características Clave
 
-### `npm start`
+-   **Diseño modulable y reutilizable**: Creado con componentes React que se alimentan de una API, lo que facilita el cambio de contenido sin modificar la estructura.
+-   **Estilo personalizable**: Utiliza Tailwind CSS, permitiendo personalización rápida de diseño, colores y tipografía.
+-   **Modo oscuro/claro**: Sistema de alternancia de temas para mejorar la accesibilidad y la experiencia del usuario.
+-   **Animaciones suaves**: Transiciones fluidas y efectos visuales para una interfaz moderna y atractiva.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Configuración y Ejecución Local
 
-### `npm test`
+### Requisitos
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   Node.js (versión **16.x o superior**)
+-   npm o yarn
 
-### `npm run build`
+### 1. Clonar el Repositorio
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://github.com/colidom/react-portfolio-template.git
+cd react-portfolio-template
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Instalar Dependencias
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
 
-### `npm run eject`
+### 3. Configurar la API
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+El frontend depende de una API de backend para obtener los datos.
+Crea un archivo `.env` en la raíz del proyecto con la siguiente variable de entorno:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+REACT_APP_BACKEND_URL=https://[URL-DE-TU-API-BACKEND]
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+⚠️ Asegúrate de que la URL de tu API sea accesible.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 4. Iniciar el Servidor de Desarrollo
 
-## Learn More
+```bash
+npm run dev
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+El portafolio estará disponible en tu navegador en:
+👉 http://localhost:5173
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🌐 API de Backend Requerida
 
-### Code Splitting
+Tu API debe exponer al menos 3 endpoints que devuelvan datos en JSON:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 1. GET /projects
 
-### Analyzing the Bundle Size
+Devuelve una lista de proyectos.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+| Campo        | Tipo             | Descripción                   | Ejemplo                                                                            |
+| ------------ | ---------------- | ----------------------------- | ---------------------------------------------------------------------------------- |
+| id           | number           | Identificador único           | 1                                                                                  |
+| title        | string           | Título del proyecto           | "Mi Primer Portfolio"                                                              |
+| description  | string           | Descripción detallada         | "Un proyecto de portafolio personal..."                                            |
+| technologies | array of strings | Tecnologías usadas            | \["React", "TailwindCSS", "Vite"]                                                  |
+| image        | string           | URL de la imagen del proyecto | "[/priorisen-dashboard.png](/prioreisen-dashboard.png)"                            |
+| code_link    | string           | URL al repositorio (GitHub)   | "[https://github.com/usuario/repositorio](https://github.com/usuario/repositorio)" |
 
-### Making a Progressive Web App
+### 2. GET /about
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+⚠️⚠️⚠️⚠️⚠️️️️️️️*Not Implemented*
 
-### Advanced Configuration
+Devuelve tu información personal.
+| Campo | Tipo | Descripción | Ejemplo |
+| ------------- | ---------------- | ------------------ | --------------------------------- |
+| name | string | Tu nombre completo | "Carlos Oliva" |
+| role | string | Rol o profesión | "Desarrollador Full Stack" |
+| bio | string | Breve biografía | "Apasionado por el desarrollo..." |
+| social_links | array of objects | Redes sociales | Ver estructura abajo |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Estructura de social_links:
+| Campo | Tipo | Descripción | Ejemplo |
+| -------- | ------ | ----------------------- | ---------------------------------------------------------- |
+| platform | string | Nombre de la red social | "GitHub" |
+| url | string | URL del perfil | "[https://github.com/colidom](https://github.com/colidom)" |
 
-### Deployment
+### 3. GET /Hero
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| Campo        | Tipo   | Descripción       | Ejemplo                                                                                                                                                                                                                 |
+| ------------ | ------ | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name         | string | Nombre            | "Carlos Oliva"                                                                                                                                                                                                          |
+| title        | string | Título a resaltar | \"Desarrollador de Software y Administrador de Sistemas"                                                                                                                                                                |
+| description  | string | Descripción       | \"Con experiencia en ..."                                                                                                                                                                                               |
+| social_links | jsonb  | Lista de enlaces  | \[{"url":"https://www.linkedin.com/in/cjod/","icon":"FaLinkedin","name":"LinkedIn"},{"url":"https://github.com/colidom","icon":"FaGithub","name":"GitHub"},{"url":"/cv.pdf","icon":"FaDownload","name":"Descargar CV"}] |
 
-### `npm run build` fails to minify
+## 🤝 Contribuciones y Soporte
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este proyecto está abierto a contribuciones.
+Si encuentras un problema o tienes una idea para una nueva característica:
+
+Abre un issue en el repositorio.
+
+Envía un pull request con tus mejoras.
