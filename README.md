@@ -75,20 +75,6 @@ Devuelve una lista de proyectos.
 
 ⚠️⚠️⚠️⚠️⚠️️️️️️️*Not Implemented*
 
-Devuelve tu información personal.
-| Campo | Tipo | Descripción | Ejemplo |
-| ------------- | ---------------- | ------------------ | --------------------------------- |
-| name | string | Tu nombre completo | "Carlos Oliva" |
-| role | string | Rol o profesión | "Desarrollador Full Stack" |
-| bio | string | Breve biografía | "Apasionado por el desarrollo..." |
-| social_links | array of objects | Redes sociales | Ver estructura abajo |
-
-Estructura de social_links:
-| Campo | Tipo | Descripción | Ejemplo |
-| -------- | ------ | ----------------------- | ---------------------------------------------------------- |
-| platform | string | Nombre de la red social | "GitHub" |
-| url | string | URL del perfil | "[https://github.com/colidom](https://github.com/colidom)" |
-
 ### 3. GET /Hero
 
 | Campo        | Tipo   | Descripción       | Ejemplo                                                                                                                                                                                                                 |
