@@ -107,7 +107,13 @@ Devuelve una lista de proyectos.
 
 ### 4. GET /about
 
-⚠️⚠️⚠️⚠️⚠️️️️️️️*Not Implemented*
+Devuelve los datos de la sección "Sobre mí".
+| Campo           | Tipo               | Descripción                   | Ejemplo                                     |
+| :---------------------------------- | :----------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------------------- |
+| `id`           | `number`           | Identificador único           | `1`                                         |
+| `description`   | `string`           | La descripción personal del portafolio.         | `"Desarrollador de software y administrador de sistemas con experiencia..."`   |
+| `technokeywords_to_highlightlogies` | `array of strings` | Palabras clave que deben ser resaltadas en la descripción.          | `["React", "TailwindCSS", "Vite"]`         |
+| `profile_image`         | `string`           | URL de la imagen de perfil. | `"//avatar.jpg"`               |
 
 ---
 
