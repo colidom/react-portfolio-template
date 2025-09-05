@@ -20,23 +20,24 @@ export default function Hero() {
             try {
                 const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/hero`);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                if (!data || Object.keys(data).length === 0 || !data.name) {
-                    setHeroData(null);
+                if (response.status === 404) {
                     setHasNoData(true);
+                    setHeroData(null);
+                } else if (!response.ok) {
+                    throw new Error(`HTTP status: ${response.status}`);
                 } else {
-                    setHeroData(data);
-                    setHasNoData(false);
+                    const data = await response.json();
+                    if (!data || Object.keys(data).length === 0 || !data.name) {
+                        setHeroData(null);
+                        setHasNoData(true);
+                    } else {
+                        setHeroData(data);
+                        setHasNoData(false);
+                    }
                 }
             } catch (err) {
                 console.error("Failed to fetch hero data:", err);
                 setError(err);
-                setHasNoData(false);
             } finally {
                 setLoading(false);
             }
@@ -45,23 +46,27 @@ export default function Hero() {
         fetchHeroData();
     }, []);
 
-    const renderSkeleton = (message) => (
+    const renderMessage = (message) => (
+        <div className="py-20 text-gray-900 dark:text-white flex items-center justify-center h-full">
+            <div className="text-center">
+                <p className="text-gray-500 dark:text-gray-400">{message}</p>
+            </div>
+        </div>
+    );
+
+    const renderSkeleton = () => (
         <div className="py-20 text-gray-900 dark:text-white">
             <div className="animate-pulse">
-                {/* Skeleton para el texto principal */}
                 <div className="h-10 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
                 <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
                 <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-6"></div>
-
-                {/* Skeleton para un solo botón */}
                 <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
                     <div className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
-                        <div className="w-5 h-5 bg-gray-400 dark:bg-gray-600 rounded-full"></div> {/* Icono placeholder */}
-                        <div className="h-4 w-24 bg-gray-400 dark:bg-gray-600 rounded"></div> {/* Texto placeholder */}
+                        <div className="w-5 h-5 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
+                        <div className="h-4 w-24 bg-gray-400 dark:bg-gray-600 rounded"></div>
                     </div>
                 </div>
             </div>
-            {message && <div className="mt-4 text-center text-gray-500 dark:text-gray-400">{message}</div>}
         </div>
     );
 
@@ -69,8 +74,12 @@ export default function Hero() {
         return <section id="inicio">{renderSkeleton()}</section>;
     }
 
-    if (error || hasNoData) {
-        return <section id="inicio">{renderSkeleton("No se pudo cargar la información. Revisa la conexión con la API.")}</section>;
+    if (error) {
+        return <section id="inicio">{renderMessage("No se pudo cargar la información. Revisa la conexión con la API.")}</section>;
+    }
+
+    if (hasNoData) {
+        return <section id="inicio">{renderMessage("Aún no has añadido datos.")}</section>;
     }
 
     return (
