@@ -55,6 +55,56 @@ const getTechIcon = (techName) => {
     return techIcons[techName] || <BsQuestionLg className="size-5 text-gray-400" />;
 };
 
+const getDuration = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = end ? new Date(end) : new Date();
+
+    let years = endDate.getFullYear() - startDate.getFullYear();
+    let months = endDate.getMonth() - startDate.getMonth();
+
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    if (endDate.getDate() >= 15) {
+        months++;
+    }
+
+    if (months >= 12) {
+        years++;
+        months -= 12;
+    }
+
+    let durationString = "";
+    if (years > 0) {
+        durationString += `${years} año${years > 1 ? "s" : ""}`;
+    }
+    if (months > 0) {
+        if (durationString.length > 0) {
+            durationString += " y ";
+        }
+        durationString += `${months} mes${months > 1 ? "es" : ""}`;
+    }
+
+    if (durationString.length === 0) {
+        return "Menos de un mes";
+    }
+
+    return durationString;
+};
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "short" };
+    const formattedDate = date.toLocaleDateString("es-ES", options);
+
+    if (!formattedDate.endsWith(".")) {
+        return formattedDate.replace(/\s(\d{4})/, ". $1");
+    }
+    return formattedDate;
+};
+
 export default function Experience() {
     const [experiences, setExperiences] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -70,51 +120,15 @@ export default function Experience() {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-                const parseDate = (dateString) => {
-                    const normalizedDate = dateString.toLowerCase();
-                    if (normalizedDate.includes("actualidad") || normalizedDate.includes("actualmente")) {
-                        return new Date(2100, 0, 1);
-                    }
-                    const [monthStr, yearStr] = dateString.split(" ");
-                    const months = {
-                        enero: 0,
-                        febrero: 1,
-                        marzo: 2,
-                        abril: 3,
-                        mayo: 4,
-                        junio: 5,
-                        julio: 6,
-                        agosto: 7,
-                        septiembre: 8,
-                        octubre: 9,
-                        noviembre: 10,
-                        diciembre: 11,
-                        "ene.": 0,
-                        "feb.": 1,
-                        "mar.": 2,
-                        "abr.": 3,
-                        "may.": 4,
-                        "jun.": 5,
-                        "jul.": 6,
-                        "ago.": 7,
-                        "sep.": 8,
-                        "oct.": 9,
-                        "nov.": 10,
-                        "dic.": 11,
-                    };
-                    const monthIndex = months[monthStr.toLowerCase().replace(".", "")];
-                    const year = parseInt(yearStr);
-                    if (isNaN(monthIndex) || isNaN(year)) {
-                        console.error("Failed to parse date:", dateString);
-                        return new Date(0);
-                    }
-                    return new Date(year, monthIndex, 1);
-                };
+
                 const sortedData = data.sort((a, b) => {
-                    const dateA = parseDate(a.end_date);
-                    const dateB = parseDate(b.end_date);
-                    if (dateA - dateB !== 0) return dateB - dateA;
-                    return parseDate(b.start_date) - parseDate(a.start_date);
+                    if (!a.end_date && !b.end_date) {
+                        return new Date(b.start_date) - new Date(a.start_date);
+                    }
+
+                    const endDateA = a.end_date ? new Date(a.end_date) : new Date(2100, 0, 1);
+                    const endDateB = b.end_date ? new Date(b.end_date) : new Date(2100, 0, 1);
+                    return endDateB - endDateA;
                 });
                 setExperiences(sortedData);
             } catch (error) {
@@ -128,16 +142,13 @@ export default function Experience() {
 
     const handleToggleExperiences = () => {
         if (showAllExperiences) {
-            // Si vamos a "Mostrar menos", primero hacemos scroll al encabezado
             if (headingRef.current) {
                 headingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
             }
-            // Y luego, después de un retraso, ocultamos las experiencias adicionales
             setTimeout(() => {
                 setShowAllExperiences(false);
             }, 300);
         } else {
-            // Si vamos a "Mostrar más", mostramos las experiencias y luego hacemos scroll
             setShowAllExperiences(true);
             setTimeout(() => {
                 if (firstHiddenRef.current) {
@@ -207,12 +218,15 @@ export default function Experience() {
                             <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 hover:scale-125 md:left-1/3 md:ml-[-0.5rem]"></div>
                             <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                                 <time className="text-sm text-gray-500 dark:text-gray-400">
-                                    {job.start_date} - {job.end_date.toLowerCase().includes("actual") ? "Actualmente" : job.end_date}
+                                    {formatDate(job.start_date)} - {job.end_date ? formatDate(job.end_date) : "Actualmente"}
                                 </time>
+                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{getDuration(job.start_date, job.end_date)}</p>
                             </div>
                             <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
                                 <h3 className="text-xl font-semibold">{job.job_title}</h3>
                                 <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
+                                {job.location && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{job.location}</p>}
+                                {job.ubication && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{job.ubication}</p>}
                                 <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
                                 {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
                                     <div className="mt-4 flex flex-wrap gap-3">
