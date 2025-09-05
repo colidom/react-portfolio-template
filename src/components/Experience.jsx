@@ -225,8 +225,13 @@ export default function Experience() {
                             <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
                                 <h3 className="text-xl font-semibold">{job.job_title}</h3>
                                 <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
-                                {job.location && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{job.location}</p>}
-                                {job.ubication && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{job.ubication}</p>}
+                                {(job.location || job.ubication) && (
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                        {job.location}
+                                        {job.location && job.ubication && " · "}
+                                        {job.ubication}
+                                    </p>
+                                )}
                                 <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
                                 {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
                                     <div className="mt-4 flex flex-wrap gap-3">
