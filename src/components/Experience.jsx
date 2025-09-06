@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MdWorkOutline } from "react-icons/md";
-import { getTechIcon } from "./icons/techIcons"; // Importa la función centralizada
+import { getTechIcon } from "./icons/techIcons";
 
 const getDuration = (start, end) => {
     const startDate = new Date(start);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoCodeWorking } from "react-icons/io5";
-import { getTechIcon } from "./icons/techIcons"; // Importa la función centralizada
+import { getTechIcon } from "./icons/techIcons";
 
 export default function Projects() {
     const [projectsData, setProjectsData] = useState([]);
