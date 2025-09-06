@@ -83,7 +83,7 @@ import { IoHardwareChip, IoFlask, IoTerminalSharp } from "react-icons/io5";
 
 export const techIcons = {
     // Lenguajes de Programación
-    javascript: <SiJavascript className="size-4 text-yellow-400" />,
+    javascript: <SiJavascript className="size-5 text-yellow-400" />,
     typescript: <SiTypescript className="size-5 text-blue-500" />,
     python: <SiPython className="size-4 text-blue-500" />,
     java: <FaJava className="size-6 text-red-700" />,
@@ -106,7 +106,6 @@ export const techIcons = {
     html5: <SiHtml5 className="size-5 text-orange-600" />,
     css: <FaCss3Alt className="size-5 text-blue-600" />,
     css3: <SiCss3 className="size-5 text-blue-600" />,
-    jsc: <SiJavascript className="size-5 text-yellow-400" />,
     jquery: <SiJquery className="size-5 text-blue-700" />,
     bootstrap: <FaBootstrap className="size-5 text-purple-500" />,
     tailwindcss: <SiTailwindcss className="size-5 text-cyan-500" />,
