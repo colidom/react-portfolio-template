@@ -86,7 +86,7 @@ export const techIcons = {
     javascript: <SiJavascript className="size-4 text-yellow-400" />,
     typescript: <SiTypescript className="size-5 text-blue-500" />,
     python: <SiPython className="size-4 text-blue-500" />,
-    java: <FaJava className="size-5 text-red-700" />,
+    java: <FaJava className="size-6 text-red-700" />,
     php: <SiPhp className="size-5 text-blue-600" />,
     c: <SiC className="size-5 text-gray-500" />,
     cpp: <SiCplusplus className="size-5 text-blue-800" />,
@@ -117,7 +117,7 @@ export const techIcons = {
     nextjs: <SiNextdotjs className="size-5 text-black dark:text-white" />,
     nuxt: <SiNuxtdotjs className="size-5 text-green-500" />,
     svelte: <SiSvelte className="size-5 text-orange-600" />,
-    jsp: <FaJava className="size-5 text-orange-400" />,
+    jsp: <FaJava className="size-6 text-orange-400" />,
 
     // Backend
     nodejs: <FaNodeJs className="size-5 text-green-500" />,
