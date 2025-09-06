@@ -1,37 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoCodeWorking } from "react-icons/io5";
-import { FaReact, FaPython, FaGitAlt, FaVuejs } from "react-icons/fa";
-import {
-    SiFastapi,
-    SiPostgresql,
-    SiVercel,
-    SiLaravel,
-    SiRender,
-    SiSupabase,
-    SiTailwindcss,
-    SiJavascript,
-    SiMysql,
-    SiVite,
-    SiHtml5,
-} from "react-icons/si";
-
-const techIcons = {
-    react: <FaReact className="size-6 text-cyan-400" />,
-    python: <FaPython className="size-6 text-blue-500" />,
-    fastapi: <SiFastapi className="size-6 text-green-500" />,
-    postgresql: <SiPostgresql className="size-6 text-blue-500" />,
-    supabase: <SiSupabase className="size-6 text-green-600" />,
-    vercel: <SiVercel className="size-6 text-black dark:text-white" />,
-    laravel: <SiLaravel className="size-6 text-red-500" />,
-    vue: <FaVuejs className="size-6 text-green-500" />,
-    mysql: <SiMysql className="size-6 text-blue-600" />,
-    vite: <SiVite className="size-6 text-purple-600" />,
-    html: <SiHtml5 className="size-6 text-orange-600" />,
-    render: <SiRender className="size-6 text-lime-500" />,
-    git: <FaGitAlt className="size-6 text-red-600" />,
-    tailwindcss: <SiTailwindcss className="size-6 text-cyan-500" />,
-    javascript: <SiJavascript className="size-6 text-yellow-400" />,
-};
+import { getTechIcon } from "./icons/techIcons"; // Importa la función centralizada
 
 export default function Projects() {
     const [projectsData, setProjectsData] = useState([]);
@@ -138,15 +107,18 @@ export default function Projects() {
                                     <div className="mt-4 mb-4">
                                         <h4 className="text-base font-medium mb-2">Tecnologías utilizadas:</h4>
                                         <div className="flex flex-wrap gap-4">
-                                            {project.technologies.map((tech, techIndex) => (
-                                                <div
-                                                    key={techIndex}
-                                                    className="flex flex-col items-center group transition-transform duration-200 hover:scale-125"
-                                                >
-                                                    {techIcons[tech.toLowerCase()] || <div className="size-6" />}
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{tech}</span>
-                                                </div>
-                                            ))}
+                                            {project.technologies.map((tech, techIndex) => {
+                                                const IconComponent = getTechIcon(tech);
+                                                return IconComponent ? (
+                                                    <div
+                                                        key={techIndex}
+                                                        className="flex flex-col items-center group transition-transform duration-200 hover:scale-125"
+                                                    >
+                                                        {IconComponent}
+                                                        <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{tech}</span>
+                                                    </div>
+                                                ) : null;
+                                            })}
                                         </div>
                                     </div>
                                 )}

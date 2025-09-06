@@ -1,59 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-    SiPython,
-    SiGit,
-    SiHtml5,
-    SiCss3,
-    SiJavascript,
-    SiSpring,
-    SiHibernate,
-    SiMqtt,
-    SiPhp,
-    SiWoocommerce,
-    SiPrestashop,
-    SiMysql,
-    SiJquery,
-    SiBootstrap,
-} from "react-icons/si";
 import { MdWorkOutline } from "react-icons/md";
-import { BsQuestionLg } from "react-icons/bs";
-import { BiLogoPostgresql } from "react-icons/bi";
-import { FaCloud, FaJava, FaGraduationCap } from "react-icons/fa";
-import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
-import { IoHardwareChip, IoFlask, IoTerminalSharp } from "react-icons/io5";
-
-const techIcons = {
-    Python: <SiPython className="size-4 text-blue-500" />,
-    PostgreSQL: <BiLogoPostgresql className="size-6 text-blue-700" />,
-    Git: <SiGit className="size-5 text-orange-600" />,
-    HTML5: <SiHtml5 className="size-5 text-orange-600" />,
-    CSS3: <SiCss3 className="size-5 text-blue-600" />,
-    JavaScript: <SiJavascript className="size-4 text-yellow-400" />,
-    Spring: <SiSpring className="size-5 text-green-500" />,
-    JSP: <FaJava className="size-5 text-orange-400" />,
-    Java: <FaJava className="size-5 text-red-700" />,
-    Hibernate: <SiHibernate className="size-5 text-gray-700 dark:text-gray-300" />,
-    MQTT: <SiMqtt className="size-4 text-purple-600" />,
-    Scripting: <IoTerminalSharp className="size-5 text-gray-600 dark:text-gray-400" />,
-    PHP: <SiPhp className="size-5 text-purple-600" />,
-    WooCommerce: <SiWoocommerce className="size-10 text-purple-600" />,
-    MySQL: <SiMysql className="size-5 text-blue-600" />,
-    jQuery: <SiJquery className="size-5 text-blue-700" />,
-    Bootstrap: <SiBootstrap className="size-5 text-purple-500" />,
-    PrestaShop: <SiPrestashop className="size-5 text-red-600" />,
-    REST: <FaCloud className="size-5 text-blue-500" />,
-    SOAP: <FaCloud className="size-5 text-indigo-500" />,
-    IoT: <IoHardwareChip className="size-5 text-green-700 dark:text-green-700" />,
-    SOA: <FlowData size={20} className="text-gray-600 dark:text-gray-400" />,
-    "IBM Integration Bus": <IbmMq size={20} className="text-blue-700" />,
-    "WebSphere Message Broker": <MessageQueue size={20} className="text-blue-700" />,
-    "Formación en TI": <FaGraduationCap className="size-5 text-yellow-500" />,
-    "Innovación en Ciencia": <IoFlask className="size-5 text-lime-500" />,
-};
-
-const getTechIcon = (techName) => {
-    return techIcons[techName] || <BsQuestionLg className="size-5 text-gray-400" />;
-};
+import { getTechIcon } from "./icons/techIcons"; // Importa la función centralizada
 
 const getDuration = (start, end) => {
     const startDate = new Date(start);
@@ -235,22 +182,17 @@ export default function Experience() {
                                 <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
                                 {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
                                     <div className="mt-4 flex flex-wrap gap-3">
-                                        {job.technologies.map((tech, techIndex) => {
-                                            const IconComponent = getTechIcon(tech);
-                                            return IconComponent ? (
-                                                <div
-                                                    key={techIndex}
-                                                    className="relative flex items-center justify-center transition-transform duration-200 group hover:scale-125"
-                                                >
-                                                    {React.cloneElement(IconComponent, {
-                                                        className: IconComponent.props.className || "",
-                                                    })}
-                                                    <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
-                                                        {tech}
-                                                    </span>
-                                                </div>
-                                            ) : null;
-                                        })}
+                                        {job.technologies.map((tech, techIndex) => (
+                                            <div
+                                                key={techIndex}
+                                                className="relative flex items-center justify-center transition-transform duration-200 group hover:scale-125"
+                                            >
+                                                {getTechIcon(tech)}
+                                                <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
+                                                    {tech}
+                                                </span>
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
                             </div>
