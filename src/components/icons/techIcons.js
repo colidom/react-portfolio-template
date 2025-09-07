@@ -16,6 +16,7 @@ import {
     FaAws,
     FaCloud,
     FaGraduationCap,
+    FaBriefcase,
 } from "react-icons/fa";
 import {
     SiCplusplus,
@@ -76,9 +77,10 @@ import {
     SiRender,
     SiPostman,
     SiHibernate,
+    SiPostgresql,
 } from "react-icons/si";
 import { BsQuestionLg } from "react-icons/bs";
-import { BiLogoSpringBoot, BiLogoPostgresql } from "react-icons/bi";
+import { BiLogoSpringBoot } from "react-icons/bi";
 import { IbmMq, FlowData, MessageQueue } from "@carbon/icons-react";
 import { IoHardwareChip, IoFlask, IoTerminalSharp } from "react-icons/io5";
 
@@ -87,7 +89,7 @@ export const techIcons = {
     javascript: <SiJavascript className="size-5 text-yellow-400" />,
     typescript: <SiTypescript className="size-5 text-blue-500" />,
     python: <SiPython className="size-4 text-blue-500" />,
-    java: <FaJava className="size-6 text-red-700" />,
+    java: <FaJava className="size-5 text-red-700" />,
     php: <SiPhp className="size-5 text-blue-600" />,
     c: <SiC className="size-5 text-gray-500" />,
     cpp: <SiCplusplus className="size-5 text-blue-800" />,
@@ -117,7 +119,7 @@ export const techIcons = {
     nextjs: <SiNextdotjs className="size-5 text-black dark:text-white" />,
     nuxt: <SiNuxtdotjs className="size-5 text-green-500" />,
     svelte: <SiSvelte className="size-5 text-orange-600" />,
-    jsp: <FaJava className="size-6 text-orange-400" />,
+    jsp: <FaJava className="size-5 text-orange-400" />,
 
     // Backend
     nodejs: <FaNodeJs className="size-5 text-green-500" />,
@@ -133,7 +135,7 @@ export const techIcons = {
 
     // Bases de Datos
     mysql: <SiMysql className="size-5 text-blue-600" />,
-    postgresql: <BiLogoPostgresql className="size-6 text-blue-700" />,
+    postgresql: <SiPostgresql className="size-5 text-blue-700" />,
     mongodb: <SiMongodb className="size-5 text-green-600" />,
     redis: <SiRedis className="size-5 text-red-600" />,
     oracle: <SiOracle className="size-5 text-red-600" />,
@@ -170,7 +172,7 @@ export const techIcons = {
     git: <SiGit className="size-5 text-orange-600" />,
     github: <FaGithub className="size-5 text-black dark:text-white" />,
     "github actions": <SiGithubactions className="size-5 text-blue-500" />,
-    jenkins: <SiJenkins className="size-6 text-orange-500" />,
+    jenkins: <SiJenkins className="size-5 text-orange-500" />,
 
     // Herramientas y Miscelánea
     npm: <SiNpm className="size-5 text-red-600" />,
@@ -187,6 +189,7 @@ export const techIcons = {
     scripting: <IoTerminalSharp className="size-5 text-gray-600 dark:text-gray-400" />,
     "formación en ti": <FaGraduationCap className="size-5 text-yellow-500" />,
     "innovación en ciencia": <IoFlask className="size-5 text-lime-500" />,
+    "soporte funcional": <FaBriefcase className="size-5 text-blue-500" />,
 };
 
 export const getTechIcon = (techName) => {
