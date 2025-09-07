@@ -90,7 +90,8 @@ export default function Hero() {
                 <br />
             </h1>
             <p className="mt-4 text-gray-400 text-lg">
-                <span className="text-yellow-400 font-bold dark:text-yellow-500">{heroData.title}</span>. {heroData.description}
+                <span className="text-yellow-400 font-bold dark:text-yellow-500">{heroData.title}</span>.{" "}
+                <span className="text-gray-700 dark:text-gray-300">{heroData.description}</span>
             </p>
 
             <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
