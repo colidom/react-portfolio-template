@@ -33,6 +33,7 @@ export default function Hero() {
                     } else {
                         setHeroData(data);
                         setHasNoData(false);
+                        document.title = `${data.name} | Portfolio`;
                     }
                 }
             } catch (err) {
