@@ -176,7 +176,7 @@ export const techIcons = {
 
     // Herramientas y Miscelánea
     npm: <SiNpm className="size-5 text-red-600" />,
-    composer: <SiComposer className="size-5 text-gray-200 " />,
+    composer: <SiComposer className="size-5 text-gray-800 dark:text-gray-200" />,
     yarn: <SiYarn className="size-5 text-blue-500" />,
     webpack: <SiWebpack className="size-5 text-blue-500" />,
     jira: <SiJira className="size-5 text-blue-600" />,
