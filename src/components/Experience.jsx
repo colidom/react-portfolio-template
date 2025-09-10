@@ -187,7 +187,7 @@ export default function Experience() {
                                     companyRefs.current[companyGroup.company] = el;
                                 }}
                             >
-                                <div className="flex flex-col md:flex-row relative">
+                                <div className="flex flex-col md:flex-row relative h-full">
                                     {/* Columna izquierda: Company Info */}
                                     <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                                         <h3 className="text-xl font-semibold mb-1">{companyGroup.company}</h3>
@@ -195,20 +195,21 @@ export default function Experience() {
                                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{companyGroup.totalDuration}</p>
                                     </div>
 
-                                    {/* Columna central: Línea y Puntos */}
-                                    <div className="relative flex flex-col items-center px-4">
-                                        <div className="absolute top-8 bottom-20 w-px bg-neutral-300 dark:bg-gray-700"></div>
-                                    </div>
+                                    <div className="md:w-2/3 md:pl-0 mt-2 md:mt-0 pl-8 relative">
+                                        {/* Columna de línea y puntos */}
+                                        <div className="absolute top-0 bottom-0 md:left-4 left-12 w-0 flex flex-col items-center">
+                                            {/* Línea vertical */}
+                                            <div className="absolute left-1/2 -translate-x-1/2 top-8 w-px h-[calc(100%-5rem)] bg-gray-700"></div>
+                                        </div>
 
-                                    {/* Columna derecha: Detalles de experiencias */}
-                                    <div className="md:w-2/3 md:pl-0 mt-2 md:mt-0 pl-8">
                                         {experiencesInCompanyToShow.map((experience, experienceIndex) => (
                                             <div key={experienceIndex} className="mb-6 last:mb-0 relative flex">
-                                                {/* Punto alineado a la izquierda */}
-                                                <div className="relative flex flex-col items-center">
-                                                    <div className="w-4 h-4 bg-blue-400 rounded-full border border-white dark:border-gray-950 mt-1.5 -ml-8 transition-transform duration-200 hover:scale-125"></div>
+                                                {/* Columna del punto */}
+                                                <div className="relative flex flex-col items-center w-8">
+                                                    <div className="w-4 h-4 bg-blue-400 rounded-full border border-white dark:border-gray-950 mt-1.5 transition-transform duration-200 hover:scale-125"></div>
                                                 </div>
 
+                                                {/* Detalles */}
                                                 <div className="flex-1 ml-4">
                                                     <h4 className="font-semibold">{experience.job_title}</h4>
                                                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -219,6 +220,7 @@ export default function Experience() {
                                                         </span>
                                                     </p>
                                                     <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{experience.description}</p>
+
                                                     {experience.technologies?.length > 0 && (
                                                         <div className="mt-4 flex flex-wrap gap-3">
                                                             {experience.technologies.map((tech, techIndex) => (
@@ -237,6 +239,7 @@ export default function Experience() {
                                                 </div>
                                             </div>
                                         ))}
+
                                         {showCompanyToggleButton && (
                                             <div className="mt-4 text-center">
                                                 <button
