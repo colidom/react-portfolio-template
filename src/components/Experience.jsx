@@ -71,12 +71,15 @@ export default function Experience() {
                         const startDate = new Date(sortedProjects[sortedProjects.length - 1].start_date);
                         const endDate = sortedProjects[0].end_date ? new Date(sortedProjects[0].end_date) : new Date();
                         const totalDuration = getDuration(startDate, endDate);
+                        const workType = sortedProjects[0].work_type;
+                        const hasMultipleWorkTypes = new Set(companyExperiences.map((exp) => exp.work_type)).size > 1;
 
                         return {
                             company: sortedProjects[0].company,
-                            location: sortedProjects[0].location,
                             totalDuration,
+                            workType,
                             projects: sortedProjects,
+                            hasMultipleWorkTypes,
                         };
                     })
                     .sort((a, b) => {
@@ -176,7 +179,10 @@ export default function Experience() {
                                     {/* Columna izquierda: Company Info */}
                                     <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                                         <h3 className="text-xl font-semibold mb-1">{companyGroup.company}</h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">{companyGroup.location}</p>
+                                        {/* Mostrar workType en la izquierda */}
+                                        {companyGroup.workType && !companyGroup.hasMultipleWorkTypes && (
+                                            <p className="text-xs text-gray-400 dark:text-gray-500">{companyGroup.workType}</p>
+                                        )}
                                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{companyGroup.totalDuration}</p>
                                     </div>
 
@@ -197,6 +203,9 @@ export default function Experience() {
                                                 {/* Detalles */}
                                                 <div className="flex-1 ml-4">
                                                     <h4 className="font-semibold">{experience.job_title}</h4>
+                                                    {companyGroup.hasMultipleWorkTypes && experience.work_type && (
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400">{experience.work_type}</p>
+                                                    )}
                                                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                                         {formatDate(experience.start_date)} -{" "}
                                                         {experience.end_date ? formatDate(experience.end_date) : "Actualmente"}
@@ -205,8 +214,14 @@ export default function Experience() {
                                                             ({getDuration(experience.start_date, experience.end_date)})
                                                         </span>
                                                     </p>
+                                                    {(experience.location || experience.ubication) && (
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                            {experience.location && experience.ubication
+                                                                ? `${experience.location} - ${experience.ubication}`
+                                                                : experience.location || experience.ubication}
+                                                        </p>
+                                                    )}
                                                     <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{experience.description}</p>
-
                                                     {experience.technologies?.length > 0 && (
                                                         <div className="mt-4 flex flex-wrap gap-3">
                                                             {experience.technologies.map((tech, techIndex) => (

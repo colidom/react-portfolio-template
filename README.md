@@ -76,17 +76,18 @@ Devuelve los datos de la sección principal.
 
 Devuelve una lista de experiencias laborales.
 
-| Campo           | Tipo               | Descripción                                  | Ejemplo                                                |
-| :-------------- | :----------------- | :------------------------------------------- | :----------------------------------------------------- |
-| `id`            | `number`           | Identificador único                          | `1`                                                    |
-| `job_title`     | `string`           | Puesto de trabajo                            | `"Desarrollador Full-Stack"`                           |
-| `company`       | `string`           | Nombre de la empresa                         | `"Empresa S.A."`                                       |
-| `start_date`    | `string`           | Fecha de inicio (formato ISO 8601)           | `"2022-05-01"`                                         |
-| `end_date`      | `string`           | Fecha de fin (formato ISO 8601) o `null`     | `"2023-11-30"` o `null` para "Actualmente"             |
-| `description`   | `string`           | Descripción de las responsabilidades         | `"Desarrollo y mantenimiento de aplicaciones web..."`  |
-| `technologies`  | `array of strings` | Tecnologías usadas                           | `["Python", "Spring", "PostgreSQL"]`                   |
-| `location`      | `string`           | Ubicación de la empresa                      | `"Madrid, España"`                                     |
-| `ubication`     | `string`           | Ubicación de la empresa (campo alternativo)  | `"Remoto"`                                             |
+| Campo           | Tipo               | Descripción                                  | Ejemplo                                                          |
+| :-------------- | :----------------- | :------------------------------------------- | :--------------------------------------------------------------- |
+| `id`            | `number`           | Identificador único                          | `1`                                                              |
+| `job_title`     | `string`           | Puesto de trabajo                            | `"Desarrollador Full-Stack"`                                     |
+| `description`   | `string`           | Descripción de las responsabilidades         | `"Desarrollo y mantenimiento de aplicaciones web..."`            |
+| `company`       | `string`           | Nombre de la empresa                         | `"Empresa S.A."`                                                 |
+| `start_date`    | `string`           | Fecha de inicio (formato ISO 8601)           | `"2022-05-01"`                                                   |
+| `end_date`      | `string`           | Fecha de fin (formato ISO 8601) o `null`     | `"2023-11-30"` o `null` para "Actualmente"                       |
+| `location`      | `string`           | Ubicación de la empresa                      | `"Madrid, España"`                                               |
+| `ubication`     | `string`           | Tipo de ubicación                            | `"En Remoto"`                                                    |
+| `work_type`     | `string`           | Tipo jornada (Completa, parcial...)          | `"Jornada Completa"`                                             |
+| `technologies`  | `array of strings` | Tecnologías usadas                           | `["Python", "Spring", "PostgreSQL"]`                             |
 
 ---
 
