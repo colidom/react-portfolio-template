@@ -14,10 +14,6 @@ const getDuration = (start, end) => {
         months += 12;
     }
 
-    if (endDate.getDate() >= 15) {
-        months++;
-    }
-
     if (months >= 12) {
         years++;
         months -= 12;
@@ -216,6 +212,7 @@ export default function Experience() {
                                                         {formatDate(experience.start_date)} -{" "}
                                                         {experience.end_date ? formatDate(experience.end_date) : "Actualmente"}
                                                         <span className="text-gray-400 dark:text-gray-500">
+                                                            {" "}
                                                             ({getDuration(experience.start_date, experience.end_date)})
                                                         </span>
                                                     </p>
