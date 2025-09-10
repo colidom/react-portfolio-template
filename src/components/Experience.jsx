@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { MdWorkOutline } from "react-icons/md";
 import { getTechIcon } from "./icons/techIcons";
-import { useExperiences } from "./hooks/useExperiences";
+import { useExperiences } from "../hooks/useExperiences";
 
 const renderSkeletonLoader = () => (
     <div className="relative">
