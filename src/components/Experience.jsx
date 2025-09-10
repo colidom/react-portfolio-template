@@ -19,22 +19,11 @@ const getDuration = (start, end) => {
         months -= 12;
     }
 
-    let durationString = "";
-    if (years > 0) {
-        durationString += `${years} año${years > 1 ? "s" : ""}`;
-    }
-    if (months > 0) {
-        if (durationString.length > 0) {
-            durationString += " y ";
-        }
-        durationString += `${months} mes${months > 1 ? "es" : ""}`;
-    }
+    const parts = [];
+    if (years) parts.push(`${years} año${years > 1 ? "s" : ""}`);
+    if (months) parts.push(`${months} mes${months > 1 ? "es" : ""}`);
 
-    if (durationString.length === 0) {
-        return "Menos de un mes";
-    }
-
-    return durationString;
+    return parts.length ? parts.join(" y ") : "Menos de un mes";
 };
 
 const formatDate = (dateString) => {
