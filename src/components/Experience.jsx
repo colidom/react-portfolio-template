@@ -14,31 +14,16 @@ const getDuration = (start, end) => {
         months += 12;
     }
 
-    if (endDate.getDate() >= 15) {
-        months++;
-    }
-
     if (months >= 12) {
         years++;
         months -= 12;
     }
 
-    let durationString = "";
-    if (years > 0) {
-        durationString += `${years} año${years > 1 ? "s" : ""}`;
-    }
-    if (months > 0) {
-        if (durationString.length > 0) {
-            durationString += " y ";
-        }
-        durationString += `${months} mes${months > 1 ? "es" : ""}`;
-    }
+    const parts = [];
+    if (years) parts.push(`${years} año${years > 1 ? "s" : ""}`);
+    if (months) parts.push(`${months} mes${months > 1 ? "es" : ""}`);
 
-    if (durationString.length === 0) {
-        return "Menos de un mes";
-    }
-
-    return durationString;
+    return parts.length ? parts.join(" y ") : "Menos de un mes";
 };
 
 const formatDate = (dateString) => {
@@ -55,9 +40,8 @@ const formatDate = (dateString) => {
 export default function Experience() {
     const [experiences, setExperiences] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showAllExperiences, setShowAllExperiences] = useState(false);
-    const headingRef = useRef(null);
-    const firstHiddenRef = useRef(null);
+    const [expandedCompanies, setExpandedCompanies] = useState({});
+    const companyRefs = useRef({});
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -68,16 +52,45 @@ export default function Experience() {
                 }
                 const data = await response.json();
 
-                const sortedData = data.sort((a, b) => {
-                    if (!a.end_date && !b.end_date) {
-                        return new Date(b.start_date) - new Date(a.start_date);
+                const groupedByCompany = data.reduce((acc, experience) => {
+                    if (!acc[experience.company]) {
+                        acc[experience.company] = [];
                     }
+                    acc[experience.company].push(experience);
+                    return acc;
+                }, {});
 
-                    const endDateA = a.end_date ? new Date(a.end_date) : new Date(2100, 0, 1);
-                    const endDateB = b.end_date ? new Date(b.end_date) : new Date(2100, 0, 1);
-                    return endDateB - endDateA;
-                });
-                setExperiences(sortedData);
+                const sortedGroupedExperiences = Object.values(groupedByCompany)
+                    .map((companyExperiences) => {
+                        const sortedProjects = companyExperiences.sort((a, b) => {
+                            const endDateA = a.end_date ? new Date(a.end_date) : new Date(2100, 0, 1);
+                            const endDateB = b.end_date ? new Date(b.end_date) : new Date(2100, 0, 1);
+                            return endDateB - endDateA;
+                        });
+
+                        const startDate = new Date(sortedProjects[sortedProjects.length - 1].start_date);
+                        const endDate = sortedProjects[0].end_date ? new Date(sortedProjects[0].end_date) : new Date();
+                        const totalDuration = getDuration(startDate, endDate);
+                        const workType = sortedProjects[0].work_type;
+                        const hasMultipleWorkTypes = new Set(companyExperiences.map((exp) => exp.work_type)).size > 1;
+
+                        return {
+                            company: sortedProjects[0].company,
+                            totalDuration,
+                            workType,
+                            projects: sortedProjects,
+                            hasMultipleWorkTypes,
+                        };
+                    })
+                    .sort((a, b) => {
+                        const latestProjectA = a.projects[0];
+                        const latestProjectB = b.projects[0];
+                        const endDateA = latestProjectA.end_date ? new Date(latestProjectA.end_date) : new Date(2100, 0, 1);
+                        const endDateB = latestProjectB.end_date ? new Date(latestProjectB.end_date) : new Date(2100, 0, 1);
+                        return endDateB - endDateA;
+                    });
+
+                setExperiences(sortedGroupedExperiences);
             } catch (error) {
                 console.error("Failed to fetch experiences:", error);
             } finally {
@@ -87,44 +100,45 @@ export default function Experience() {
         fetchExperiences();
     }, []);
 
-    const handleToggleExperiences = () => {
-        if (showAllExperiences) {
-            if (headingRef.current) {
-                headingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    const handleToggleCompanyExperiences = (companyName, isExpanded) => {
+        if (isExpanded) {
+            if (companyRefs.current[companyName]) {
+                companyRefs.current[companyName].scrollIntoView({ behavior: "smooth", block: "start" });
             }
             setTimeout(() => {
-                setShowAllExperiences(false);
+                setExpandedCompanies((prevState) => ({
+                    ...prevState,
+                    [companyName]: false,
+                }));
             }, 300);
         } else {
-            setShowAllExperiences(true);
-            setTimeout(() => {
-                if (firstHiddenRef.current) {
-                    firstHiddenRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            }, 300);
+            setExpandedCompanies((prevState) => ({
+                ...prevState,
+                [companyName]: true,
+            }));
         }
     };
 
     const renderSkeletonLoader = () => (
         <div className="relative">
-            <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
             {[...Array(3)].map((_, index) => (
                 <div key={index} className="flex flex-col md:flex-row mb-10 relative animate-pulse">
-                    <div className="absolute w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 md:left-1/3 md:ml-[-0.5rem]"></div>
-                    <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
+                    {/* Izquierda */}
+                    <div className="md:w-1/3 left-8 text-left md:text-right md:pr-12 pl-8">
                         <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-2/3 mb-2 md:ml-auto"></div>
                     </div>
-                    <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
+                    {/* Centro */}
+                    <div className="relative flex flex-col items-center px-4">
+                        <div className="absolute top-8 bottom-20 w-px bg-neutral-300 dark:bg-gray-700"></div>
+                        <div className="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded-full border border-white dark:border-gray-950 mt-1.5"></div>
+                    </div>
+                    {/* Derecha */}
+                    <div className="md:w-2/3 left-8md:pl-0 mt-2 md:mt-0 pl-8">
                         <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
                         <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-4"></div>
                         <div className="space-y-2">
                             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
                             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
-                        </div>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
-                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
-                            <div className="h-6 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
                         </div>
                     </div>
                 </div>
@@ -132,18 +146,13 @@ export default function Experience() {
         </div>
     );
 
-    const experiencesToShow = showAllExperiences ? experiences : experiences.slice(0, 3);
-    const showToggleButton = experiences.length > 3;
-
     return (
         <section id="experiencia" className="mt-32">
             <div className="flex items-center mb-8">
                 <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
                     <MdWorkOutline className="size-5" />
                 </div>
-                <h2 ref={headingRef} className="text-3xl font-bold">
-                    Experiencia laboral
-                </h2>
+                <h2 className="text-3xl font-bold">Experiencia laboral</h2>
             </div>
             {loading ? (
                 renderSkeletonLoader()
@@ -151,64 +160,114 @@ export default function Experience() {
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido experiencias laborales.</div>
             ) : (
                 <div className="relative">
-                    <div className="absolute top-[-1.5rem] left-2 w-px h-[calc(100%+1.5rem)] bg-neutral-300 dark:bg-gray-700 md:left-1/3 md:ml-[-0.5px]"></div>
-                    {experiencesToShow.map((job, index) => (
-                        <div
-                            key={index}
-                            className="flex flex-col md:flex-row mb-10 relative"
-                            ref={(el) => {
-                                if (index === 3) {
-                                    firstHiddenRef.current = el;
-                                }
-                            }}
-                        >
-                            <div className="absolute w-4 h-4 bg-blue-400 rounded-full left-0 mt-1.5 border border-white dark:border-gray-950 transition-transform duration-200 hover:scale-125 md:left-1/3 md:ml-[-0.5rem]"></div>
-                            <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
-                                <time className="text-sm text-gray-500 dark:text-gray-400">
-                                    {formatDate(job.start_date)} - {job.end_date ? formatDate(job.end_date) : "Actualmente"}
-                                </time>
-                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{getDuration(job.start_date, job.end_date)}</p>
-                            </div>
-                            <div className="md:w-2/3 md:pl-12 mt-2 md:mt-0 pl-8">
-                                <h3 className="text-xl font-semibold">{job.job_title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400">{job.company}</p>
-                                {(job.location || job.ubication) && (
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                        {job.location}
-                                        {job.location && job.ubication && " · "}
-                                        {job.ubication}
-                                    </p>
-                                )}
-                                <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{job.description}</p>
-                                {job.technologies && Array.isArray(job.technologies) && job.technologies.length > 0 && (
-                                    <div className="mt-4 flex flex-wrap gap-3">
-                                        {job.technologies.map((tech, techIndex) => (
-                                            <div
-                                                key={techIndex}
-                                                className="relative flex items-center justify-center transition-transform duration-200 group hover:scale-125"
-                                            >
-                                                {getTechIcon(tech)}
-                                                <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
-                                                    {tech}
-                                                </span>
+                    {experiences.map((companyGroup, index) => {
+                        const experiencesInCompanyToShow = expandedCompanies[companyGroup.company]
+                            ? companyGroup.projects
+                            : companyGroup.projects.slice(0, 2);
+                        const showCompanyToggleButton = companyGroup.projects.length > 2;
+                        const isCompanyExpanded = !!expandedCompanies[companyGroup.company];
+
+                        return (
+                            <div
+                                key={index}
+                                className="relative mb-12"
+                                ref={(el) => {
+                                    companyRefs.current[companyGroup.company] = el;
+                                }}
+                            >
+                                <div className="flex flex-col md:flex-row relative h-full">
+                                    {/* Columna izquierda: Company Info */}
+                                    <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
+                                        <h3 className="text-xl font-semibold mb-1">{companyGroup.company}</h3>
+                                        {/* Mostrar workType en la izquierda */}
+                                        {companyGroup.workType && !companyGroup.hasMultipleWorkTypes && (
+                                            <p className="text-xs text-gray-400 dark:text-gray-500">{companyGroup.workType}</p>
+                                        )}
+                                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{companyGroup.totalDuration}</p>
+                                    </div>
+
+                                    <div className="md:w-2/3 md:pl-0 mt-2 md:mt-0 pl-8 relative">
+                                        {/* Columna de línea y puntos */}
+                                        <div className="absolute top-0 bottom-0 md:left-4 left-12 w-0 flex flex-col items-center">
+                                            {/* Línea vertical */}
+                                            <div className="absolute left-1/2 -translate-x-1/2 top-8 w-px h-[calc(100%-5rem)] bg-gray-700"></div>
+                                        </div>
+
+                                        {experiencesInCompanyToShow.map((experience, experienceIndex) => (
+                                            <div key={experienceIndex} className="mb-6 last:mb-0 relative flex">
+                                                {/* Columna del punto */}
+                                                <div className="relative flex flex-col items-center w-8">
+                                                    <div className="w-4 h-4 bg-blue-400 rounded-full border border-white dark:border-gray-950 mt-1.5 transition-transform duration-200 hover:scale-125"></div>
+                                                </div>
+
+                                                {/* Detalles */}
+                                                <div className="flex-1 ml-4">
+                                                    <h4 className="font-semibold">{experience.job_title}</h4>
+                                                    {companyGroup.hasMultipleWorkTypes && experience.work_type && (
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400">{experience.work_type}</p>
+                                                    )}
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                                        {formatDate(experience.start_date)} -{" "}
+                                                        {experience.end_date ? formatDate(experience.end_date) : "Actualmente"}
+                                                        <span className="text-gray-400 dark:text-gray-500">
+                                                            {" "}
+                                                            ({getDuration(experience.start_date, experience.end_date)})
+                                                        </span>
+                                                    </p>
+                                                    {(experience.location || experience.ubication) && (
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                            {experience.location && experience.ubication
+                                                                ? `${experience.location} - ${experience.ubication}`
+                                                                : experience.location || experience.ubication}
+                                                        </p>
+                                                    )}
+                                                    <p className="mt-2 space-y-1 text-gray-700 dark:text-gray-300">{experience.description}</p>
+                                                    {experience.technologies?.length > 0 && (
+                                                        <div className="mt-4 flex flex-wrap gap-3">
+                                                            {experience.technologies.map((tech, techIndex) => (
+                                                                <div
+                                                                    key={techIndex}
+                                                                    className="relative flex items-center justify-center transition-transform duration-200 group hover:scale-125"
+                                                                >
+                                                                    {getTechIcon(tech)}
+                                                                    <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md whitespace-nowrap">
+                                                                        {tech}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         ))}
+
+                                        {showCompanyToggleButton && (
+                                            <div className="mt-4 text-center">
+                                                <button
+                                                    onClick={() => handleToggleCompanyExperiences(companyGroup.company, isCompanyExpanded)}
+                                                    className="flex items-center justify-center mx-auto text-blue-500 font-semibold px-4 py-2 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-200"
+                                                >
+                                                    {isCompanyExpanded ? "Mostrar menos" : "Mostrar más"}
+                                                    <span
+                                                        className={`ml-2 transform transition-transform duration-300 ${
+                                                            isCompanyExpanded ? "rotate-180" : ""
+                                                        }`}
+                                                    >
+                                                        &#x25BC;
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
+                                </div>
+
+                                {/* Línea separadora entre empresas */}
+                                {index < experiences.length - 1 && (
+                                    <div className="border-b border-neutral-300 dark:border-gray-700 mx-auto my-12"></div>
                                 )}
                             </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {showToggleButton && (
-                <div className="mt-8 text-center">
-                    <button
-                        onClick={handleToggleExperiences}
-                        className="flex items-center justify-center mx-auto text-blue-500 font-semibold px-4 py-2 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-200"
-                    >
-                        {showAllExperiences ? "Mostrar menos" : "Mostrar más"}
-                        <span className={`ml-2 transform transition-transform duration-300 ${showAllExperiences ? "rotate-180" : ""}`}>&#x25BC;</span>
-                    </button>
+                        );
+                    })}
                 </div>
             )}
         </section>
