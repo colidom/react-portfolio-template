@@ -1,55 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useAboutData } from "../hooks/useAboutData";
+
+const renderSkeletonLoader = () => (
+    <div className="flex flex-col md:flex-row gap-8 items-start rounded-lg p-6 animate-pulse">
+        <div className="flex-shrink-0 w-full md:w-1/3 h-48 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
+        <div className="flex-1 w-full md:w-2/3">
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-4"></div>
+        </div>
+    </div>
+);
 
 export default function About() {
-    const [aboutData, setAboutData] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    const renderSkeletonLoader = () => (
-        <div className="flex flex-col md:flex-row gap-8 items-start rounded-lg p-6 animate-pulse">
-            <div className="flex-shrink-0 w-full md:w-1/3 h-48 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-            <div className="flex-1 w-full md:w-2/3">
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-4"></div>
-            </div>
-        </div>
-    );
-
-    const renderDescriptionWithHighlights = (description, keywords) => {
-        if (!description || !keywords || keywords.length === 0) return description;
-
-        let content = description;
-        keywords.forEach((keyword) => {
-            const regex = new RegExp(`\\b(${keyword})\\b`, "gi");
-            content = content.replace(regex, `<span class="text-yellow-500 font-bold">${keyword}</span>`);
-        });
-
-        return <p className="text-lg text-gray-700 dark:text-gray-300 text-justify" dangerouslySetInnerHTML={{ __html: content }}></p>;
-    };
-
-    useEffect(() => {
-        const fetchAboutData = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/about-me`);
-                const data = await response.json();
-
-                if (data && data.description) {
-                    setAboutData(data);
-                } else {
-                    setAboutData(null);
-                }
-            } catch (err) {
-                console.error("Failed to fetch About Me data:", err);
-                setAboutData(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchAboutData();
-    }, []);
+    const { aboutData, loading, error, hasNoData, renderDescriptionWithHighlights } = useAboutData();
 
     return (
         <section id="sobre-mi" className="mt-32">
@@ -59,10 +25,13 @@ export default function About() {
                 </div>
                 <h2 className="text-3xl font-bold">Sobre mí</h2>
             </div>
-
             {loading ? (
                 renderSkeletonLoader()
-            ) : aboutData ? (
+            ) : error ? (
+                <p className="text-center text-red-500 dark:text-red-400">Error al cargar la información.</p>
+            ) : hasNoData ? (
+                <p className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido información.</p>
+            ) : (
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                     <div className="w-full md:w-1/3 flex-shrink-0">
                         <img
@@ -73,8 +42,6 @@ export default function About() {
                     </div>
                     <div className="w-full md:w-2/3">{renderDescriptionWithHighlights(aboutData.description, aboutData.keywords_to_highlight)}</div>
                 </div>
-            ) : (
-                <p className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido información.</p>
             )}
         </section>
     );

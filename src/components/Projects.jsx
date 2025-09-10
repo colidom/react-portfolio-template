@@ -1,75 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { IoCodeWorking } from "react-icons/io5";
 import { getTechIcon } from "./icons/techIcons";
+import { useProjects } from "../hooks/useProjects";
 
-export default function Projects() {
-    const [projectsData, setProjectsData] = useState([]);
-    const [loading, setLoading] = useState(true);
+const DUMMY_IMAGE_URL = "/img-placeholder.png";
 
-    const DUMMY_IMAGE_URL = "/img-placeholder.png";
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/projects`);
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                const sortedProjects = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-                setProjectsData(sortedProjects);
-                setLoading(false);
-            } catch (error) {
-                console.error("Failed to fetch projects:", error);
-                setLoading(false);
-            }
-        };
-        fetchProjects();
-    }, []);
-
-    const formatDate = (dateString) => {
-        if (!dateString) return null;
-        const date = new Date(dateString);
-        return date.toLocaleDateString("es-ES", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    };
-
-    const renderSkeletonLoader = () => (
-        <div className="space-y-16">
-            {[...Array(1)].map((_, index) => (
-                <article key={index} className="flex flex-col md:flex-row items-start gap-8 rounded-lg p-6 animate-pulse">
-                    <div className="flex-shrink-0 w-full md:w-1/3 h-48 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                    <div className="flex-1 w-full md:w-2/3">
-                        <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
-                        <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-4"></div>
-                        <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-                        <div className="mt-4 flex flex-wrap gap-4">
-                            <div className="flex flex-col items-center">
-                                <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                                <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                                <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                                <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                            </div>
+const renderSkeletonLoader = () => (
+    <div className="space-y-16">
+        {[...Array(1)].map((_, index) => (
+            <article key={index} className="flex flex-col md:flex-row items-start gap-8 rounded-lg p-6 animate-pulse">
+                <div className="flex-shrink-0 w-full md:w-1/3 h-48 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
+                <div className="flex-1 w-full md:w-2/3">
+                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-4"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
+                    <div className="mt-4 flex flex-wrap gap-4">
+                        <div className="flex flex-col items-center">
+                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
                         </div>
-                        <div className="mt-8">
-                            <div className="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                        <div className="flex flex-col items-center">
+                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
                         </div>
                     </div>
-                </article>
-            ))}
-        </div>
-    );
+                    <div className="mt-8">
+                        <div className="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                    </div>
+                </div>
+            </article>
+        ))}
+    </div>
+);
+
+export default function Projects() {
+    const { projectsData, loading, error, formatDate } = useProjects();
 
     return (
         <section id="proyectos" className="mt-32">
@@ -81,6 +51,8 @@ export default function Projects() {
             </div>
             {loading ? (
                 renderSkeletonLoader()
+            ) : error ? (
+                <div className="text-center text-red-500 dark:text-red-400">Error al cargar los proyectos.</div>
             ) : projectsData.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido proyectos.</div>
             ) : (

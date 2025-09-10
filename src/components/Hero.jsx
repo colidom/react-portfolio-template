@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FaGithub, FaLinkedin, FaDownload } from "react-icons/fa";
 import { BsQuestionLg } from "react-icons/bs";
+import { useHeroData } from "../hooks/useHeroData";
 
 const iconMapping = {
     FaLinkedin: FaLinkedin,
@@ -9,67 +10,32 @@ const iconMapping = {
     generic: BsQuestionLg,
 };
 
-export default function Hero() {
-    const [heroData, setHeroData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [hasNoData, setHasNoData] = useState(false);
-
-    useEffect(() => {
-        const fetchHeroData = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/hero`);
-
-                if (response.status === 404) {
-                    setHasNoData(true);
-                    setHeroData(null);
-                } else if (!response.ok) {
-                    throw new Error(`HTTP status: ${response.status}`);
-                } else {
-                    const data = await response.json();
-                    if (!data || Object.keys(data).length === 0 || !data.name) {
-                        setHeroData(null);
-                        setHasNoData(true);
-                    } else {
-                        setHeroData(data);
-                        setHasNoData(false);
-                        document.title = `${data.name} | Portfolio`;
-                    }
-                }
-            } catch (err) {
-                console.error("Failed to fetch hero data:", err);
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHeroData();
-    }, []);
-
-    const renderMessage = (message) => (
-        <div className="py-20 text-gray-900 dark:text-white flex items-center justify-center h-full">
-            <div className="text-center">
-                <p className="text-gray-500 dark:text-gray-400">{message}</p>
-            </div>
+const renderMessage = (message) => (
+    <div className="py-20 text-gray-900 dark:text-white flex items-center justify-center h-full">
+        <div className="text-center">
+            <p className="text-gray-500 dark:text-gray-400">{message}</p>
         </div>
-    );
+    </div>
+);
 
-    const renderSkeleton = () => (
-        <div className="py-20 text-gray-900 dark:text-white">
-            <div className="animate-pulse">
-                <div className="h-10 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-6"></div>
-                <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
-                    <div className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
-                        <div className="w-5 h-5 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
-                        <div className="h-4 w-24 bg-gray-400 dark:bg-gray-600 rounded"></div>
-                    </div>
+const renderSkeleton = () => (
+    <div className="py-20 text-gray-900 dark:text-white">
+        <div className="animate-pulse">
+            <div className="h-10 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-6"></div>
+            <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
+                <div className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700">
+                    <div className="w-5 h-5 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
+                    <div className="h-4 w-24 bg-gray-400 dark:bg-gray-600 rounded"></div>
                 </div>
             </div>
         </div>
-    );
+    </div>
+);
+
+export default function Hero() {
+    const { heroData, loading, error, hasNoData } = useHeroData();
 
     if (loading) {
         return <section id="inicio">{renderSkeleton()}</section>;
