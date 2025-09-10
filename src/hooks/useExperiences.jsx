@@ -23,9 +23,12 @@ export const formatDate = (dateString) => {
     if (!dateString) return "Actualmente";
     const date = new Date(dateString);
     const options = { year: "numeric", month: "short" };
-    const formattedDate = date.toLocaleDateString("es-ES", options);
 
-    return formattedDate.replace(/\s(\d{4})/, " $1").replace(/\.$/, "");
+    const formattedDate = date.toLocaleDateString("es-ES", options);
+    const [month, year] = formattedDate.split(" ");
+    const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1).replace(/\.$/, "") + ".";
+
+    return `${capitalizedMonth} ${year}`;
 };
 
 // El custom hook
