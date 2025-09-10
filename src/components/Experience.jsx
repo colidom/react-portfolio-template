@@ -14,11 +14,6 @@ const getDuration = (start, end) => {
         months += 12;
     }
 
-    if (months >= 12) {
-        years++;
-        months -= 12;
-    }
-
     const parts = [];
     if (years) parts.push(`${years} año${years > 1 ? "s" : ""}`);
     if (months) parts.push(`${months} mes${months > 1 ? "es" : ""}`);
@@ -27,14 +22,12 @@ const getDuration = (start, end) => {
 };
 
 const formatDate = (dateString) => {
+    if (!dateString) return "Actualmente";
     const date = new Date(dateString);
     const options = { year: "numeric", month: "short" };
     const formattedDate = date.toLocaleDateString("es-ES", options);
 
-    if (!formattedDate.endsWith(".")) {
-        return formattedDate.replace(/\s(\d{4})/, ". $1");
-    }
-    return formattedDate;
+    return formattedDate.replace(/\s(\d{4})/, " $1").replace(/\.$/, "");
 };
 
 export default function Experience() {
@@ -52,45 +45,51 @@ export default function Experience() {
                 }
                 const data = await response.json();
 
+                // 1. Ordenar todas las experiencias por fecha de inicio, de la más reciente a la más antigua.
+                // Los trabajos "Actualmente" (con end_date nula) se priorizan.
+                data.sort((a, b) => {
+                    const aIsOngoing = !a.end_date;
+                    const bIsOngoing = !b.end_date;
+
+                    // Si ambos están en curso, ordena por fecha de inicio (desc)
+                    if (aIsOngoing && bIsOngoing) {
+                        return new Date(b.start_date) - new Date(a.start_date);
+                    }
+                    // Si 'a' está en curso, va primero
+                    if (aIsOngoing) return -1;
+                    // Si 'b' está en curso, 'a' va después
+                    if (bIsOngoing) return 1;
+
+                    // Si ambos han terminado, ordenar por fecha de finalización (desc)
+                    return new Date(b.end_date) - new Date(a.end_date);
+                });
+
+                // Agrupar las experiencias ya ordenadas por empresa
                 const groupedByCompany = data.reduce((acc, experience) => {
                     if (!acc[experience.company]) {
-                        acc[experience.company] = [];
+                        acc[experience.company] = {
+                            company: experience.company,
+                            projects: [],
+                            latestEndDate: experience.end_date,
+                            latestStartDate: new Date(experience.start_date),
+                            hasMultipleWorkTypes: false,
+                        };
                     }
-                    acc[experience.company].push(experience);
+                    acc[experience.company].projects.push(experience);
                     return acc;
                 }, {});
 
-                const sortedGroupedExperiences = Object.values(groupedByCompany)
-                    .map((companyExperiences) => {
-                        const sortedProjects = companyExperiences.sort((a, b) => {
-                            const endDateA = a.end_date ? new Date(a.end_date) : new Date(2100, 0, 1);
-                            const endDateB = b.end_date ? new Date(b.end_date) : new Date(2100, 0, 1);
-                            return endDateB - endDateA;
-                        });
+                // Convertir el objeto de grupos en un array y calcular la duración total
+                const processedExperiences = Object.values(groupedByCompany).map((companyGroup) => {
+                    const earliestProject = companyGroup.projects[companyGroup.projects.length - 1];
+                    const latestProject = companyGroup.projects[0];
+                    const totalDuration = getDuration(earliestProject.start_date, latestProject.end_date);
+                    companyGroup.totalDuration = totalDuration;
+                    companyGroup.hasMultipleWorkTypes = new Set(companyGroup.projects.map((exp) => exp.work_type)).size > 1;
+                    return companyGroup;
+                });
 
-                        const startDate = new Date(sortedProjects[sortedProjects.length - 1].start_date);
-                        const endDate = sortedProjects[0].end_date ? new Date(sortedProjects[0].end_date) : new Date();
-                        const totalDuration = getDuration(startDate, endDate);
-                        const workType = sortedProjects[0].work_type;
-                        const hasMultipleWorkTypes = new Set(companyExperiences.map((exp) => exp.work_type)).size > 1;
-
-                        return {
-                            company: sortedProjects[0].company,
-                            totalDuration,
-                            workType,
-                            projects: sortedProjects,
-                            hasMultipleWorkTypes,
-                        };
-                    })
-                    .sort((a, b) => {
-                        const latestProjectA = a.projects[0];
-                        const latestProjectB = b.projects[0];
-                        const endDateA = latestProjectA.end_date ? new Date(latestProjectA.end_date) : new Date(2100, 0, 1);
-                        const endDateB = latestProjectB.end_date ? new Date(latestProjectB.end_date) : new Date(2100, 0, 1);
-                        return endDateB - endDateA;
-                    });
-
-                setExperiences(sortedGroupedExperiences);
+                setExperiences(processedExperiences);
             } catch (error) {
                 console.error("Failed to fetch experiences:", error);
             } finally {
@@ -179,7 +178,6 @@ export default function Experience() {
                                     {/* Columna izquierda: Company Info */}
                                     <div className="md:w-1/3 text-left md:text-right md:pr-12 pl-8">
                                         <h3 className="text-xl font-semibold mb-1">{companyGroup.company}</h3>
-                                        {/* Mostrar workType en la izquierda */}
                                         {companyGroup.workType && !companyGroup.hasMultipleWorkTypes && (
                                             <p className="text-xs text-gray-400 dark:text-gray-500">{companyGroup.workType}</p>
                                         )}
