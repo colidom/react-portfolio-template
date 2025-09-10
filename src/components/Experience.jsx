@@ -175,8 +175,8 @@ export default function Experience() {
                     {experiences.map((companyGroup, index) => {
                         const experiencesInCompanyToShow = expandedCompanies[companyGroup.company]
                             ? companyGroup.projects
-                            : companyGroup.projects.slice(0, 3);
-                        const showCompanyToggleButton = companyGroup.projects.length > 3;
+                            : companyGroup.projects.slice(0, 2);
+                        const showCompanyToggleButton = companyGroup.projects.length > 2;
                         const isCompanyExpanded = !!expandedCompanies[companyGroup.company];
 
                         return (
