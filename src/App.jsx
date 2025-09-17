@@ -14,7 +14,7 @@ export default function App() {
             <Header />
             <Analytics />
             <SpeedInsights />
-            <main className="px-6 md:px-20 max-w-5xl mx-auto space-y-32 pt-20">
+            <main className="flex-grow px-6 md:px-20 max-w-5xl mx-auto space-y-32 pt-20">
                 <Hero />
                 <Experience />
                 <Projects />
