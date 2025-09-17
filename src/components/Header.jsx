@@ -4,6 +4,14 @@ import ThemeIcon from "./ThemeIcon";
 import { useTheme } from "../hooks/useTheme";
 import { useScrollEffects } from "../hooks/useScrollEffects";
 
+const navItems = [
+    { id: "inicio", label: "Inicio", icon: MdHome, type: "internal" },
+    { id: "experiencia", label: "Experiencia", type: "internal" },
+    { id: "proyectos", label: "Proyectos", type: "internal" },
+    { id: "sobre-mi", label: "Sobre mí", type: "internal" },
+    { id: "contacto", label: "Contacto", type: "external", href: "mailto:colidom@outlook.com" },
+];
+
 export default function Header() {
     const { theme, menuOpen, setMenuOpen, handleChange, themeTranslations } = useTheme();
     const { isScrolled, activeSection, handleNavClick } = useScrollEffects();
@@ -14,42 +22,34 @@ export default function Header() {
                 ${isScrolled ? "backdrop-blur-md bg-white/80 dark:bg-gray-900/80 shadow-md" : "bg-transparent"}`}
         >
             <nav className="flex items-center px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200">
-                <button
-                    onClick={(e) => handleNavClick(e, "inicio")}
-                    className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
-                        activeSection === "inicio" ? "text-blue-500 font-semibold" : ""
-                    }`}
-                    aria-label="Ir a la sección de Inicio"
-                >
-                    <MdHome className="size-5" />
-                </button>
-                <button
-                    onClick={(e) => handleNavClick(e, "experiencia")}
-                    className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
-                        activeSection === "experiencia" ? "text-blue-500 font-semibold" : ""
-                    }`}
-                >
-                    Experiencia
-                </button>
-                <button
-                    onClick={(e) => handleNavClick(e, "proyectos")}
-                    className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
-                        activeSection === "proyectos" ? "text-blue-500 font-semibold" : ""
-                    }`}
-                >
-                    Proyectos
-                </button>
-                <button
-                    onClick={(e) => handleNavClick(e, "sobre-mi")}
-                    className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
-                        activeSection === "sobre-mi" ? "text-blue-500 font-semibold" : ""
-                    }`}
-                >
-                    Sobre mí
-                </button>
-                <a href="mailto:colidom@outlook.com" className="px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500">
-                    Contacto
-                </a>
+                {navItems.map((item) => {
+                    // Si es un enlace interno (para scroll al hacer clic)
+                    if (item.type === "internal") {
+                        const IconComponent = item.icon;
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={(e) => handleNavClick(e, item.id)}
+                                className={`px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500 ${
+                                    activeSection === item.id ? "text-blue-500 font-semibold" : ""
+                                }`}
+                                aria-label={`Ir a la sección de ${item.label}`}
+                            >
+                                {IconComponent ? <IconComponent className="size-5" /> : item.label}
+                            </button>
+                        );
+                    }
+                    // Si es un enlace externo (como el mailto)
+                    else if (item.type === "external") {
+                        return (
+                            <a key={item.id} href={item.href} className="px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500">
+                                {item.label}
+                            </a>
+                        );
+                    }
+                    return null;
+                })}
+
                 <div className="relative ml-1 mr-1">
                     <button
                         id="theme-toggle-btn"
