@@ -57,7 +57,13 @@ export const useScrollEffects = () => {
         e.preventDefault();
         isClickScrolling.current = true;
         setActiveSection(sectionId);
-        document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        } else {
+            console.error(`Error: Elemento con id "${sectionId}" no encontrado.`);
+        }
 
         setTimeout(() => {
             isClickScrolling.current = false;
