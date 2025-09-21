@@ -54,6 +54,7 @@ import {
     SiTrello,
     SiWebpack,
     SiTailwindcss,
+    SiReactrouter,
     SiChakraui,
     SiAntdesign,
     SiVite,
@@ -102,6 +103,8 @@ export const techIcons = {
     // Frontend
     react: <FaReact className="size-5 text-cyan-400" />,
     "react native": <FaReact className="size-5 text-cyan-400" />,
+    "react router": <SiReactrouter className="size-5 text-orange-500" />,
+    "react router dom": <SiReactrouter className="size-5 text-orange-500" />,
     redux: <SiRedux className="size-5 text-purple-500" />,
     angular: <FaAngular className="size-5 text-red-600" />,
     vue: <FaVuejs className="size-5 text-green-500" />,
