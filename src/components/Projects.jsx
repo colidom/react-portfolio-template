@@ -118,6 +118,43 @@ export default function Projects() {
                                             <span>Código</span>
                                         </a>
                                     )}
+
+                                    {(() => {
+                                        const isAvailable = !!project.demo_link;
+                                        const buttonText = isAvailable ? "Ver en Vivo" : "No disponible";
+                                        const baseClasses = "px-3 py-1.5 rounded-full flex items-center space-x-1 transition-colors duration-200";
+                                        const availableClasses =
+                                            "text-emerald-600 border border-emerald-600 hover:bg-emerald-600 hover:text-white dark:text-teal-400 dark:border-teal-400 dark:hover:bg-teal-400 dark:hover:text-gray-900";
+                                        const disabledClasses =
+                                            "text-gray-400 border border-gray-400 cursor-default dark:text-gray-600 dark:border-gray-600";
+
+                                        return (
+                                            <a
+                                                href={isAvailable ? project.demo_link : "#"}
+                                                target={isAvailable ? "_blank" : "_self"}
+                                                rel={isAvailable ? "noopener noreferrer" : ""}
+                                                className={`${baseClasses} ${isAvailable ? availableClasses : disabledClasses}`}
+                                                onClick={(e) => !isAvailable && e.preventDefault()}
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="size-5"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="2"
+                                                    stroke="currentColor"
+                                                    fill="none"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M11 7h-5a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-5"></path>
+                                                    <path d="M10 14l10 -10"></path>
+                                                    <path d="M15 4l5 0l0 5"></path>
+                                                </svg>
+                                                <span>{buttonText}</span>
+                                            </a>
+                                        );
+                                    })()}
                                 </div>
                             </div>
                         </article>
