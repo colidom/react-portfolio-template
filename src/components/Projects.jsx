@@ -129,7 +129,7 @@ const ProjectCard = ({ project, index }) => {
                                         <div className="text-2xl transition-transform duration-200">
                                             {IconComponent}
                                         </div>
-                                        <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
                                             {tech}
                                         </span>
                                     </motion.div>
@@ -153,7 +153,7 @@ const ProjectCard = ({ project, index }) => {
 
 export default function Projects() {
     const { projectsData, loading, error, formatDate } = useProjects();
-    const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+    const [viewMode, setViewMode] = useState('grid');
 
     return (
         <section id="proyectos" className="mt-32">
