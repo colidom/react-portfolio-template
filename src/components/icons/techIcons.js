@@ -41,6 +41,14 @@ const customIcons = {
     // Servicios
     "emailjs": <MdIcons.MdEmail className="size-5 text-red-500" />,
     
+    // Terminal y Scripting
+    "bash": <SiIcons.SiGnubash className="size-5 text-gray-300" />,
+    "shell": <FaIcons.FaTerminal className="size-5 text-green-500" />,
+    "terminal": <FaIcons.FaTerminal className="size-5 text-gray-400" />,
+    "scripting": <BsIcons.BsTerminal className="size-5 text-blue-400" />,
+    "powershell": <MdIcons.MdTerminal className="size-5 text-blue-600" />,
+    "zsh": <FaIcons.FaTerminal className="size-5 text-green-400" />,
+    
     // Conceptos específicos
     "iot": <IoIcons.IoHardwareChip className="size-5 text-green-600" />,
     "blockchain": <FaIcons.FaCube className="size-5 text-yellow-600" />,
@@ -169,6 +177,10 @@ const techAliases = {
     "wordpress": "fawordpress",
     "woocommerce": "siwoocommerce",
     "prestashop": "siprestashop",
+    
+    // Terminal y Scripting
+    "sh": "signu",
+    "batch": "faterminal",
 };
 
 // Normalizar nombre de tecnología
@@ -368,6 +380,16 @@ const techColors = {
     "prestashop": "text-pink-600",
     "innovación en ciencia": "text-green-500",
     "formación en ti": "text-blue-600",
+    
+    // Terminal y Scripting
+    "bash": "text-gray-300",
+    "shell": "text-green-500",
+    "terminal": "text-gray-400",
+    "scripting": "text-blue-400",
+    "powershell": "text-blue-600",
+    "zsh": "text-green-400",
+    "sh": "text-gray-400",
+    "batch": "text-yellow-500",
     
     // Default
     "default": "text-blue-500",
