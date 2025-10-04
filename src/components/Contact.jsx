@@ -3,7 +3,7 @@ import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import { SlideIn, FadeIn } from "./AnimatedSection";
 import { isValidEmail } from "../utils/helpers";
 
@@ -12,20 +12,20 @@ const contactInfo = [
         icon: MdEmail,
         label: "Email",
         value: "colidom@outlook.com",
-        href: "mailto:colidom@outlook.com"
+        href: "mailto:colidom@outlook.com",
     },
-    {
+    /* {
         icon: MdPhone,
         label: "Teléfono",
         value: "+34 XXX XXX XXX",
         href: "tel:+34XXXXXXXXX"
-    },
+    }, */
     {
         icon: MdLocationOn,
         label: "Ubicación",
         value: "Madrid, España",
-        href: null
-    }
+        href: null,
+    },
 ];
 
 const socialLinks = [
@@ -33,78 +33,78 @@ const socialLinks = [
         icon: FaLinkedin,
         label: "LinkedIn",
         href: "https://linkedin.com",
-        color: "hover:text-blue-600"
+        color: "hover:text-blue-600",
     },
     {
         icon: FaGithub,
         label: "GitHub",
         href: "https://github.com",
-        color: "hover:text-gray-600 dark:hover:text-gray-400"
+        color: "hover:text-gray-600 dark:hover:text-gray-400",
     },
     {
         icon: FaTwitter,
         label: "Twitter",
         href: "https://twitter.com",
-        color: "hover:text-blue-400"
-    }
+        color: "hover:text-blue-400",
+    },
 ];
 
 export default function Contact() {
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const validateForm = () => {
         const newErrors = {};
-        
+
         if (!formData.name.trim()) {
-            newErrors.name = 'El nombre es requerido';
+            newErrors.name = "El nombre es requerido";
         }
-        
+
         if (!formData.email.trim()) {
-            newErrors.email = 'El email es requerido';
+            newErrors.email = "El email es requerido";
         } else if (!isValidEmail(formData.email)) {
-            newErrors.email = 'Email inválido';
+            newErrors.email = "Email inválido";
         }
-        
+
         if (!formData.subject.trim()) {
-            newErrors.subject = 'El asunto es requerido';
+            newErrors.subject = "El asunto es requerido";
         }
-        
+
         if (!formData.message.trim()) {
-            newErrors.message = 'El mensaje es requerido';
+            newErrors.message = "El mensaje es requerido";
         } else if (formData.message.trim().length < 10) {
-            newErrors.message = 'El mensaje debe tener al menos 10 caracteres';
+            newErrors.message = "El mensaje debe tener al menos 10 caracteres";
         }
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
         if (errors[name]) {
-            setErrors(prev => ({
+            setErrors((prev) => ({
                 ...prev,
-                [name]: ''
+                [name]: "",
             }));
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validateForm()) {
-            toast.error('Por favor corrige los errores del formulario');
+            toast.error("Por favor corrige los errores del formulario");
             return;
         }
 
@@ -113,9 +113,9 @@ export default function Contact() {
         try {
             // EmailJS configuration
             // Reemplaza estos valores con los tuyos de EmailJS
-            const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
-            const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
-            const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+            const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+            const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+            const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
 
             // Enviar email usando EmailJS
             await emailjs.send(
@@ -126,23 +126,23 @@ export default function Contact() {
                     from_email: formData.email,
                     subject: formData.subject,
                     message: formData.message,
-                    to_name: 'Tu Nombre', // Tu nombre
+                    to_name: "Tu Nombre", // Tu nombre
                 },
                 publicKey
             );
-            
-            toast.success('¡Mensaje enviado con éxito! Te responderé pronto.');
-            
+
+            toast.success("¡Mensaje enviado con éxito! Te responderé pronto.");
+
             // Reset form
             setFormData({
-                name: '',
-                email: '',
-                subject: '',
-                message: ''
+                name: "",
+                email: "",
+                subject: "",
+                message: "",
             });
         } catch (error) {
-            console.error('Error sending message:', error);
-            toast.error('Error al enviar el mensaje. Por favor intenta de nuevo o escríbeme directamente a colidom@outlook.com');
+            console.error("Error sending message:", error);
+            toast.error("Error al enviar el mensaje. Por favor intenta de nuevo o escríbeme directamente a colidom@outlook.com");
         } finally {
             setIsSubmitting(false);
         }
@@ -167,12 +167,9 @@ export default function Contact() {
                 {/* Contact Info */}
                 <div className="space-y-8">
                     <FadeIn delay={0.2}>
-                        <h3 className="text-2xl font-semibold mb-6">
-                            ¿Tienes un proyecto en mente?
-                        </h3>
+                        <h3 className="text-2xl font-semibold mb-6">¿Tienes un proyecto en mente?</h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-8">
-                            Estoy disponible para nuevos proyectos y colaboraciones. 
-                            No dudes en contactarme a través de cualquiera de estos medios.
+                            Estoy disponible para nuevos proyectos y colaboraciones. No dudes en contactarme a través de cualquiera de estos medios.
                         </p>
                     </FadeIn>
 
@@ -180,9 +177,8 @@ export default function Contact() {
                     <div className="space-y-4">
                         {contactInfo.map((info, index) => {
                             const IconComponent = info.icon;
-                            const content = (
+                            const CardContent = (
                                 <motion.div
-                                    key={index}
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
@@ -194,22 +190,18 @@ export default function Contact() {
                                         <IconComponent className="size-6 text-blue-500" />
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {info.label}
-                                        </p>
-                                        <p className="font-medium text-gray-900 dark:text-white">
-                                            {info.value}
-                                        </p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">{info.label}</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">{info.value}</p>
                                     </div>
                                 </motion.div>
                             );
 
                             return info.href ? (
-                                <a key={index} href={info.href}>
-                                    {content}
+                                <a key={index} href={info.href} className="block">
+                                    {CardContent}
                                 </a>
                             ) : (
-                                content
+                                <div key={index}>{CardContent}</div>
                             );
                         })}
                     </div>
@@ -217,9 +209,7 @@ export default function Contact() {
                     {/* Social Links */}
                     <FadeIn delay={0.6}>
                         <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                                Sígueme en redes sociales
-                            </p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Sígueme en redes sociales</p>
                             <div className="flex gap-4">
                                 {socialLinks.map((social, index) => {
                                     const IconComponent = social.icon;
@@ -248,12 +238,6 @@ export default function Contact() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Name Input */}
                         <div>
-                            <label 
-                                htmlFor="name" 
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                            >
-                                Nombre *
-                            </label>
                             <input
                                 type="text"
                                 id="name"
@@ -261,25 +245,15 @@ export default function Contact() {
                                 value={formData.name}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.name 
-                                        ? 'border-red-500 focus:ring-red-500' 
-                                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                                    errors.name ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                                 } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition-all duration-200`}
-                                placeholder="Tu nombre"
+                                placeholder="Nombre"
                             />
-                            {errors.name && (
-                                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
-                            )}
+                            {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                         </div>
 
                         {/* Email Input */}
                         <div>
-                            <label 
-                                htmlFor="email" 
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                            >
-                                Email *
-                            </label>
                             <input
                                 type="email"
                                 id="email"
@@ -287,25 +261,15 @@ export default function Contact() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.email 
-                                        ? 'border-red-500 focus:ring-red-500' 
-                                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                                    errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                                 } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition-all duration-200`}
-                                placeholder="tu@email.com"
+                                placeholder="john.doe@example.dev"
                             />
-                            {errors.email && (
-                                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-                            )}
+                            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                         </div>
 
                         {/* Subject Input */}
                         <div>
-                            <label 
-                                htmlFor="subject" 
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                            >
-                                Asunto *
-                            </label>
                             <input
                                 type="text"
                                 id="subject"
@@ -313,25 +277,15 @@ export default function Contact() {
                                 value={formData.subject}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.subject 
-                                        ? 'border-red-500 focus:ring-red-500' 
-                                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                                    errors.subject ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                                 } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition-all duration-200`}
                                 placeholder="Motivo del contacto"
                             />
-                            {errors.subject && (
-                                <p className="mt-1 text-sm text-red-500">{errors.subject}</p>
-                            )}
+                            {errors.subject && <p className="mt-1 text-sm text-red-500">{errors.subject}</p>}
                         </div>
 
                         {/* Message Textarea */}
                         <div>
-                            <label 
-                                htmlFor="message" 
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                            >
-                                Mensaje *
-                            </label>
                             <textarea
                                 id="message"
                                 name="message"
@@ -339,15 +293,11 @@ export default function Contact() {
                                 onChange={handleChange}
                                 rows="6"
                                 className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.message 
-                                        ? 'border-red-500 focus:ring-red-500' 
-                                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                                    errors.message ? "border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                                 } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition-all duration-200 resize-none`}
                                 placeholder="Cuéntame sobre tu proyecto..."
                             />
-                            {errors.message && (
-                                <p className="mt-1 text-sm text-red-500">{errors.message}</p>
-                            )}
+                            {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
                         </div>
 
                         {/* Submit Button */}
@@ -358,20 +308,24 @@ export default function Contact() {
                             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                             className={`w-full px-6 py-4 rounded-lg font-semibold text-white transition-all duration-300 ${
                                 isSubmitting
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl'
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl"
                             }`}
                         >
                             {isSubmitting ? (
                                 <span className="flex items-center justify-center gap-2">
                                     <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                        />
                                     </svg>
                                     Enviando...
                                 </span>
                             ) : (
-                                'Enviar Mensaje'
+                                "Enviar Mensaje"
                             )}
                         </motion.button>
                     </form>
