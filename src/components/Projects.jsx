@@ -30,6 +30,12 @@ const renderSkeletonLoader = () => (
 const ProjectCard = ({ project, index }) => {
     const [imageError, setImageError] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [showAllTechs, setShowAllTechs] = useState(false);
+
+    const maxVisibleTechs = 6;
+    const visibleTechs = project.technologies?.slice(0, maxVisibleTechs) || [];
+    const hiddenTechs = project.technologies?.slice(maxVisibleTechs) || [];
+    const hasMoreTechs = hiddenTechs.length > 0;
 
     return (
         <StaggerItem>
@@ -117,29 +123,99 @@ const ProjectCard = ({ project, index }) => {
 
                     {/* Technologies */}
                     {project.technologies && Array.isArray(project.technologies) && project.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                            {project.technologies.slice(0, 6).map((tech, techIndex) => {
-                                const IconComponent = getTechIcon(tech);
-                                return IconComponent ? (
+                        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <AnimatePresence mode="wait">
+                                {showAllTechs ? (
+                                    // Mostrar todas las tecnologías
                                     <motion.div
-                                        key={techIndex}
-                                        whileHover={{ scale: 1.2, rotate: 5 }}
-                                        className="relative group/tech"
+                                        key="all-techs"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.3 }}
                                     >
-                                        <div className="text-2xl transition-transform duration-200">
-                                            {IconComponent}
+                                        <div className="flex flex-wrap gap-3 items-center">
+                                            {project.technologies.map((tech, techIndex) => {
+                                                const IconComponent = getTechIcon(tech);
+                                                return IconComponent ? (
+                                                    <motion.div
+                                                        key={techIndex}
+                                                        initial={{ opacity: 0, scale: 0.8 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: techIndex * 0.05 }}
+                                                        whileHover={{ scale: 1.2, rotate: 5 }}
+                                                        className="relative group/tech"
+                                                    >
+                                                        <div className="text-2xl transition-transform duration-200">
+                                                            {IconComponent}
+                                                        </div>
+                                                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
+                                                            {tech}
+                                                        </span>
+                                                    </motion.div>
+                                                ) : null;
+                                            })}
                                         </div>
-                                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
-                                            {tech}
-                                        </span>
+                                        {/* Botón mostrar menos - mejor alineado */}
+                                        <motion.button
+                                            onClick={() => setShowAllTechs(false)}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="mt-3 px-4 py-2 text-sm font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 flex items-center gap-2"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                            </svg>
+                                            Mostrar menos
+                                        </motion.button>
                                     </motion.div>
-                                ) : null;
-                            })}
-                            {project.technologies.length > 6 && (
-                                <span className="text-sm text-gray-500 dark:text-gray-400 self-center">
-                                    +{project.technologies.length - 6}
-                                </span>
-                            )}
+                                ) : (
+                                    // Mostrar tecnologías limitadas
+                                    <motion.div
+                                        key="limited-techs"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="flex flex-wrap gap-3 items-center"
+                                    >
+                                        {visibleTechs.map((tech, techIndex) => {
+                                            const IconComponent = getTechIcon(tech);
+                                            return IconComponent ? (
+                                                <motion.div
+                                                    key={techIndex}
+                                                    whileHover={{ scale: 1.2, rotate: 5 }}
+                                                    className="relative group/tech"
+                                                >
+                                                    <div className="text-2xl transition-transform duration-200">
+                                                        {IconComponent}
+                                                    </div>
+                                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
+                                                        {tech}
+                                                    </span>
+                                                </motion.div>
+                                            ) : null;
+                                        })}
+                                        {/* Botón +X - mejor alineado */}
+                                        {hasMoreTechs && (
+                                            <motion.button
+                                                onClick={() => setShowAllTechs(true)}
+                                                whileHover={{ scale: 1.1 }}
+                                                whileTap={{ scale: 0.9 }}
+                                                className="relative group/more flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 font-bold text-xs transition-all duration-200"
+                                            >
+                                                +{hiddenTechs.length}
+                                                
+                                                {/* Tooltip con tecnologías ocultas */}
+                                                <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/more:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl z-10 max-w-xs">
+                                                    <span className="block font-semibold mb-1">Más tecnologías:</span>
+                                                    {hiddenTechs.join(', ')}
+                                                    <span className="block text-blue-300 mt-1 text-[10px]">Click para ver todas</span>
+                                                </span>
+                                            </motion.button>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>
