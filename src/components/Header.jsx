@@ -109,8 +109,9 @@ export default function Header() {
                             })}
                             
                             {/* Theme Toggle Desktop */}
-                            <div className="relative ml-2">
+                            <div className="relative ml-2" id="theme-toggle-container">
                                 <motion.button
+                                    id="theme-toggle-btn"
                                     onClick={() => setMenuOpen(!menuOpen)}
                                     className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                     whileHover={{ scale: 1.1 }}
@@ -123,6 +124,7 @@ export default function Header() {
                                 <AnimatePresence>
                                     {menuOpen && (
                                         <motion.div
+                                            id="theme-menu"
                                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -134,14 +136,15 @@ export default function Header() {
                                                     <motion.li
                                                         key={option}
                                                         onClick={() => handleChange(option)}
-                                                        className={`px-4 py-2 cursor-pointer transition-colors
+                                                        className={`px-4 py-2 cursor-pointer transition-colors flex items-center justify-between
                                                             ${theme === option 
                                                                 ? "bg-blue-500 text-white" 
                                                                 : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                                                             }`}
                                                         whileHover={{ x: 4 }}
                                                     >
-                                                        {themeTranslations[option]}
+                                                        <span>{themeTranslations[option]}</span>
+                                                        <ThemeIcon selected={option} isInMenu={true} isActive={theme === option} currentTheme={theme} />
                                                     </motion.li>
                                                 ))}
                                             </ul>
@@ -155,6 +158,7 @@ export default function Header() {
                         <div className="md:hidden flex items-center gap-2">
                             {/* Theme Toggle Mobile */}
                             <motion.button
+                                id="theme-toggle-btn-mobile"
                                 onClick={() => setMenuOpen(!menuOpen)}
                                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                 whileHover={{ scale: 1.1 }}
@@ -186,6 +190,7 @@ export default function Header() {
                 <AnimatePresence>
                     {menuOpen && (
                         <motion.div
+                            id="theme-menu-mobile"
                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -197,14 +202,15 @@ export default function Header() {
                                     <motion.li
                                         key={option}
                                         onClick={() => handleChange(option)}
-                                        className={`px-4 py-2 cursor-pointer transition-colors
+                                        className={`px-4 py-2 cursor-pointer transition-colors flex items-center justify-between
                                             ${theme === option 
                                                 ? "bg-blue-500 text-white" 
                                                 : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                                             }`}
                                         whileHover={{ x: 4 }}
                                     >
-                                        {themeTranslations[option]}
+                                        <span>{themeTranslations[option]}</span>
+                                        <ThemeIcon selected={option} isInMenu={true} isActive={theme === option} currentTheme={theme} />
                                     </motion.li>
                                 ))}
                             </ul>

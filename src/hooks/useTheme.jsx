@@ -40,13 +40,28 @@ export const useTheme = () => {
 
     useEffect(() => {
         const listener = (e) => {
-            if (!e.target.closest("#theme-toggle-btn") && !e.target.closest("#theme-menu")) {
+            // Verificar si el clic fue fuera de los elementos del tema
+            const isOutside = !e.target.closest("#theme-toggle-btn") && 
+                            !e.target.closest("#theme-toggle-btn-mobile") && 
+                            !e.target.closest("#theme-menu") && 
+                            !e.target.closest("#theme-menu-mobile") &&
+                            !e.target.closest("#theme-toggle-container");
+            
+            if (isOutside) {
                 setMenuOpen(false);
             }
         };
-        document.addEventListener("click", listener);
-        return () => document.removeEventListener("click", listener);
-    }, []);
+        
+        // Usar timeout para evitar que el clic inicial cierre el menú inmediatamente
+        const timeout = setTimeout(() => {
+            document.addEventListener("click", listener);
+        }, 0);
+        
+        return () => {
+            clearTimeout(timeout);
+            document.removeEventListener("click", listener);
+        };
+    }, [menuOpen]);
 
     const handleChange = (newTheme) => {
         localStorage.setItem("theme", newTheme);

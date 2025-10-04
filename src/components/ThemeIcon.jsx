@@ -1,11 +1,37 @@
-export default function ThemeIcon({ selected }) {
+export default function ThemeIcon({ selected, isInMenu = false, isActive = false, currentTheme = "light" }) {
+    // Determinar colores según el contexto
+    const getIconColor = () => {
+        if (isInMenu && isActive) {
+            // Si está en el menú y es la opción activa (fondo azul), usar blanco
+            return "text-white";
+        }
+        
+        if (isInMenu) {
+            // Si está en el menú pero NO activo, adaptar al tema actual de la app
+            // En tema claro, fondo blanco -> íconos oscuros
+            // En tema oscuro, fondo oscuro -> íconos claros
+            const isDark = currentTheme === "dark" || (currentTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+            return isDark ? "text-gray-300" : "text-gray-700";
+        }
+        
+        // Para el botón principal (no en menú), usar colores específicos por ícono
+        if (selected === "light") {
+            return "text-gray-900 dark:text-gray-900";
+        }
+        if (selected === "dark") {
+            return "text-gray-100";
+        }
+        // sistema
+        return "text-gray-900 dark:text-gray-100";
+    };
+
     return (
         <div className="relative w-5 h-5 flex items-center">
             {/* Ícono de Sol (para tema claro) */}
             <svg
                 className={`absolute w-5 h-5 transition-transform duration-200 ease-in-out ${
                     selected === "light" ? "scale-100" : "scale-0"
-                } text-gray-900`}
+                } ${getIconColor()}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -22,7 +48,7 @@ export default function ThemeIcon({ selected }) {
             <svg
                 className={`absolute w-5 h-5 transition-transform duration-200 ease-in-out ${
                     selected === "dark" ? "scale-100" : "scale-0"
-                } text-gray-100`}
+                } ${getIconColor()}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -38,7 +64,7 @@ export default function ThemeIcon({ selected }) {
             <svg
                 className={`absolute w-5 h-5 transition-transform duration-200 ease-in-out ${
                     selected === "system" ? "scale-100" : "scale-0"
-                } text-gray-900 dark:text-gray-100`}
+                } ${getIconColor()}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
