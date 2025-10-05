@@ -9,7 +9,7 @@ const navItems = [
     { id: "inicio", label: "Inicio", icon: MdHome, type: "internal" },
     { id: "experiencia", label: "Experiencia", type: "internal" },
     { id: "proyectos", label: "Proyectos", type: "internal" },
-    { id: "habilidades", label: "Habilidades", type: "internal" },
+/*     { id: "habilidades", label: "Habilidades", type: "internal" }, */
     { id: "sobre-mi", label: "Sobre mí", type: "internal" },
     { id: "contacto", label: "Contacto", type: "internal" },
 ];

@@ -75,7 +75,7 @@ export default function About() {
                             {[
                                 { label: "Proyectos", value: "10+", icon: "🚀" },
                                 { label: "Experiencia", value: "3+ años", icon: "💼" },
-                                { label: "Tecnologías", value: "15+", icon: "⚡" }
+                                { label: "Tecnologías", value: "15+", icon: "⚡" },
                             ].map((stat, index) => (
                                 <motion.div
                                     key={index}
@@ -83,12 +83,8 @@ export default function About() {
                                     className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 text-center"
                                 >
                                     <div className="text-3xl mb-2">{stat.icon}</div>
-                                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                                        {stat.value}
-                                    </div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                                        {stat.label}
-                                    </div>
+                                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
                                 </motion.div>
                             ))}
                         </motion.div>
