@@ -27,6 +27,15 @@ const customIcons = {
     "microservicios": <BsIcons.BsBoxes className="size-5 text-teal-500" />,
     "monolith": <BsIcons.BsBox className="size-5 text-gray-600" />,
     "serverless": <AiIcons.AiOutlineCloudServer className="size-5 text-yellow-500" />,
+    "soa": <BsIcons.BsDiagram3 className="size-5 text-blue-500" />,
+    "service-oriented architecture": <BsIcons.BsDiagram3 className="size-5 text-purple-600" />,
+    
+    // IBM Integration
+    "ibm integration bus": <MdIcons.MdIntegrationInstructions className="size-5 text-blue-600" />,
+    "iib": <MdIcons.MdIntegrationInstructions className="size-5 text-blue-700" />,
+    "websphere message broker": <IoIcons.IoSwapHorizontal className="size-5 text-purple-400" />,
+    "wmb": <IoIcons.IoSwapHorizontal className="size-5 text-blue-800" />,
+    "ibm": <FaIcons.FaServer className="size-5 text-blue-600" />,
     
     // Metodologías
     "agile": <MdIcons.MdSpeed className="size-5 text-green-500" />,
@@ -390,6 +399,15 @@ const techColors = {
     "zsh": "text-green-400",
     "sh": "text-gray-400",
     "batch": "text-yellow-500",
+    
+    // IBM Integration
+    "ibm integration bus": "text-blue-700",
+    "iib": "text-blue-700",
+    "websphere message broker": "text-blue-800",
+    "wmb": "text-blue-800",
+    "ibm": "text-blue-600",
+    "soa": "text-blue-600",
+    "service-oriented architecture": "text-blue-600",
     
     // Default
     "default": "text-blue-500",
