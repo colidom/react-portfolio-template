@@ -6,9 +6,9 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
-        { icon: FaGithub, href: "https://github.com", label: "GitHub" },
-        { icon: FaLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
-        { icon: FaTwitter, href: "https://twitter.com", label: "Twitter" }
+        { icon: FaLinkedin, href: "https://www.linkedin.com/in/cjod/", label: "LinkedIn" },
+        { icon: FaGithub, href: "https://github.com/colidom", label: "GitHub" },
+        /* { icon: FaTwitter, href: "https://twitter.com", label: "Twitter" } */
     ];
 
     const navLinks = [

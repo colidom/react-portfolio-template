@@ -32,21 +32,21 @@ const socialLinks = [
     {
         icon: FaLinkedin,
         label: "LinkedIn",
-        href: "https://linkedin.com",
+        href: "https://www.linkedin.com/in/cjod/",
         color: "hover:text-blue-600",
     },
     {
         icon: FaGithub,
         label: "GitHub",
-        href: "https://github.com",
+        href: "https://github.com/colidom",
         color: "hover:text-gray-600 dark:hover:text-gray-400",
     },
-    {
+    /* {
         icon: FaTwitter,
         label: "Twitter",
         href: "https://twitter.com",
         color: "hover:text-blue-400",
-    },
+    }, */
 ];
 
 export default function Contact() {
