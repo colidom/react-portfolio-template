@@ -87,7 +87,7 @@ export const NAV_ITEMS = [
     { name: "Inicio", href: "#inicio" },
     { name: "Experiencia", href: "#experiencia" },
     { name: "Proyectos", href: "#proyectos" },
-    { name: "Habilidades", href: "#habilidades" },
+    /* { name: "Habilidades", href: "#habilidades" }, */
     { name: "Sobre mí", href: "#sobre-mi" },
     { name: "Contacto", href: "#contacto" }
 ];
