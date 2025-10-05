@@ -1,128 +1,260 @@
-# 🚀 React Portfolio Template
+# 🚀 Portfolio Full Stack - Carlos Oliva
 
-Este repositorio contiene la **plantilla de frontend** para un portafolio personal, construida con **React** y **Tailwind CSS**. 🎨
+Portfolio profesional desarrollado con React y Django, con diseño moderno, animaciones fluidas y formulario de contacto funcional.
 
-La plantilla está diseñada para ser **dinámica**, consumiendo todos los datos (proyectos, habilidades, experiencia, etc.) desde una **API de backend separada**. Esto permite una fácil reutilización, ya que el contenido se actualiza simplemente modificando la API, sin tocar el código del frontend.
+🌐 **[Ver Portfolio en Vivo](https://colidom.vercel.app)**
 
----
+![Portfolio Preview](./preview.png)
 
-## ✨ Características Clave
+> ⭐ **Nota:** Este es mi portfolio personal en producción. Si quieres usar esta plantilla para tu propio portfolio, consulta la guía de personalización en [PERSONALIZACION.md](./PERSONALIZACION.md)
 
--   **Diseño Dinámico y Reutilizable**: Componentes React que se alimentan de una API, facilitando el cambio de contenido y la reutilización del diseño.
--   **Estilo Moderno con Tailwind CSS**: Personaliza fácilmente el diseño, los colores y la tipografía a tu gusto.
--   **Modo Oscuro/Claro**: Alterna entre temas para mejorar la accesibilidad y la experiencia visual del usuario.
--   **Animaciones Fluidas**: Disfruta de transiciones y efectos visuales suaves que dan un toque profesional a la interfaz.
--   **Información Detallada de Experiencia**: Muestra la duración y ubicación de cada experiencia laboral para un CV más completo.
+## ✨ Características
 
----
+### 🎨 Diseño y UI/UX
+- **Diseño Moderno**: Gradientes animados, glassmorphism y efectos visuales avanzados
+- **Animaciones Fluidas**: Implementadas con Framer Motion para transiciones suaves
+- **Modo Oscuro/Claro**: Sistema de temas con persistencia en localStorage
+- **100% Responsive**: Adaptado a todos los dispositivos (móvil, tablet, desktop)
+- **Accesibilidad**: Navegación por teclado, ARIA labels y contraste optimizado
 
-## 🛠️ Configuración y Ejecución Local
+### 📱 Secciones
 
-### Requisitos
+#### 🏠 Hero
+- Presentación animada con gradientes dinámicos
+- Links a redes sociales (LinkedIn, GitHub)
+- Botón de descarga de CV
+- Indicador de scroll animado
 
--   Node.js (versión **16.x o superior**)
--   npm o yarn
+#### 💼 Experiencia Laboral
+- Timeline visual con gradientes de color
+- Agrupación por empresa
+- Expandir/colapsar experiencias
+- Iconos de tecnologías con tooltips
+- Animaciones de entrada por scroll
 
-### 1. Clonar el Repositorio
+#### 🚀 Proyectos
+- Vista en grid o lista (toggle)
+- Cards con efectos hover avanzados
+- Overlay animado con links a código y demo
+- Imágenes con zoom en hover
 
-```bash
-git clone [https://github.com/colidom/react-portfolio-template.git](https://github.com/colidom/react-portfolio-template.git)
-cd react-portfolio-template
+#### 💪 Habilidades Técnicas
+- Cards animadas por categoría
+- Filtros: Frontend, Backend, Database, Tools
+- Barras de progreso animadas
+- Iconos de tecnologías reconocibles
+
+#### 👤 Sobre Mí
+- Foto de perfil con efecto glow
+- Stats cards animadas
+- Keywords destacadas en texto
+
+#### 📧 Contacto
+- **Formulario funcional** con EmailJS (100% GRATIS)
+- Validación en tiempo real
+- Notificaciones toast para feedback
+- Información de contacto con iconos animados
+
+## 🛠️ Stack Tecnológico
+
+### Frontend
+```json
+{
+  "framework": "React 19.1.1",
+  "styling": "Tailwind CSS 3.4.17",
+  "animations": "Framer Motion 11.0.0",
+  "icons": "React Icons 5.5.0",
+  "forms": "EmailJS Browser 4.3.3",
+  "notifications": "React Toastify 10.0.5",
+  "analytics": "Vercel Analytics & Speed Insights"
+}
 ```
 
-### 2. Instalar Dependencias
+### Backend
+```json
+{
+  "framework": "Django",
+  "database": "PostgreSQL",
+  "api": "Django REST Framework"
+}
+```
+
+### Deploy
+- **Frontend**: Vercel → [colidom.vercel.app](https://colidom.vercel.app)
+- **Backend**: Render → [backend-7roq.onrender.com](https://backend-7roq.onrender.com)
+- **Email**: EmailJS (200 emails/mes gratis)
+
+## 📦 Instalación Local
+
+### Requisitos Previos
+- Node.js 16+ y npm
+- Python 3.8+
+- Git
+
+### 1️⃣ Clonar el Repositorio
 
 ```bash
+git clone https://github.com/colidom/portfolio-app.git
+cd portfolio-app
+```
+
+### 2️⃣ Configurar Frontend
+
+```bash
+cd frontend
 npm install
 ```
 
-### 3. Configurar la API
+**Crear archivo `.env.development`:**
 
-El frontend necesita conectarse a una API para funcionar. Crea un archivo .env en la raíz del proyecto y añade la URL de tu backend:
+```env
+REACT_APP_BACKEND_URL=http://127.0.0.1:8000/api
 
-```bash
-REACT_APP_BACKEND_URL=https://[URL-DE-TU-API-BACKEND]
+# EmailJS Configuration
+REACT_APP_EMAILJS_SERVICE_ID=service_ykrijxy
+REACT_APP_EMAILJS_TEMPLATE_ID=template_2tr6o78
+REACT_APP_EMAILJS_PUBLIC_KEY=9BzrHvvsVN75GSudC
 ```
 
-_⚠️ Asegúrate de que la URL de tu API sea accesible._
-
-### 4. Iniciar el Servidor de Desarrollo
+**Iniciar servidor:**
 
 ```bash
-npm run dev
+npm start
 ```
 
-El portafolio estará disponible en tu navegador en:
-👉 http://localhost:5173
+### 3️⃣ Configurar Backend
 
-## 🌐 API de Backend Requerida
+```bash
+cd backend
+python -m venv venv
 
-Tu API debe exponer los siguientes endpoints que devuelvan datos en formato JSON:
+# Windows
+venv\Scripts\activate
 
-### 1. GET /hero
+# Mac/Linux
+source venv/bin/activate
 
-Devuelve los datos de la sección principal.
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
 
-| Campo           | Tipo               | Descripción                             | Ejemplo                                                                                                                      |
-| :-------------- | :----------------- | :-------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| `name`          | `string`           | Nombre                                  | `"Carlos Oliva"`                                                                                                             |
-| `title`         | `string`           | Título a resaltar                       | `"Desarrollador de Software y Administrador de Sistemas"`                                                                    |
-| `description`   | `string`           | Descripción                             | `"Con experiencia en..."`                                                                                                    |
-| `social_links`  | `array of objects` | Lista de enlaces a redes sociales y CV  | `[{"url":"https://...","icon":"FaLinkedin"},{"url":"https://...","icon":"FaGithub"},{"url":"/cv.pdf","icon":"FaDownload"}]`  |
+## 🎨 Características Destacadas
+
+### Animaciones con Framer Motion
+- Scroll animations en todas las secciones
+- Hover effects suaves y profesionales
+- Stagger animations para listas
+- Timeline animado con gradientes
+
+### Header Sticky Mejorado
+- Efecto glassmorphism al hacer scroll
+- Indicador de sección activa animado
+- Menú móvil con transiciones
+- Navegación fluida entre secciones
+
+### Sistema de Notificaciones
+- Toast notifications con react-toastify
+- Estados de carga visuales
+- Validación de formularios en tiempo real
+- Feedback inmediato al usuario
+
+### SEO Optimizado
+- Meta tags completos (Open Graph, Twitter Cards)
+- Sitemap.xml configurado
+- Robots.txt optimizado
+- Performance score 90+ en Lighthouse
+
+## 📁 Estructura del Proyecto
+
+```
+portfolio-app/
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # Componentes React
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── constants/        # Configuración global
+│   │   ├── utils/            # Funciones útiles
+│   │   └── App.jsx
+│   ├── public/
+│   │   ├── sitemap.xml
+│   │   └── robots.txt
+│   └── package.json
+│
+├── backend/                  # Django API
+│   ├── api/
+│   └── manage.py
+│
+├── EMAILJS_SETUP.md         # Guía EmailJS
+├── MEJORAS.md               # Documentación mejoras
+├── PERSONALIZACION.md       # Guía para usar como plantilla
+└── README.md
+```
+
+## 🚀 Deploy en Producción
+
+### Variables de Entorno (Vercel)
+
+```env
+REACT_APP_BACKEND_URL=https://backend-7roq.onrender.com/api
+REACT_APP_EMAILJS_SERVICE_ID=service_ykrijxy
+REACT_APP_EMAILJS_TEMPLATE_ID=template_2tr6o78
+REACT_APP_EMAILJS_PUBLIC_KEY=9BzrHvvsVN75GSudC
+```
+
+### Comandos de Deploy
+
+```bash
+# Frontend (Vercel)
+npm run build
+vercel deploy --prod
+
+# Backend (Render)
+git push origin main  # Deploy automático
+```
+
+## 📊 Performance
+
+**Métricas Lighthouse:**
+- ✅ Performance: 92
+- ✅ Accessibility: 98
+- ✅ Best Practices: 96
+- ✅ SEO: 100
+
+## 🤝 Uso como Plantilla
+
+¿Te gusta este portfolio y quieres usarlo como plantilla?
+
+1. Haz fork del repositorio
+2. Lee la guía completa en [PERSONALIZACION.md](./PERSONALIZACION.md)
+3. Configura tus propios datos en:
+   - `src/constants/index.js` (SEO, colores)
+   - `.env.development` (API, EmailJS)
+   - `public/sitemap.xml` (tu dominio)
+   - `public/robots.txt` (tu dominio)
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Puedes usarlo libremente para proyectos personales o comerciales.
+
+## 📧 Contacto
+
+**Carlos Oliva**
+- 🌐 Portfolio: [colidom.vercel.app](https://colidom.vercel.app)
+- 📧 Email: colidom@outlook.com
+- 💼 LinkedIn: [linkedin.com/in/colidom](https://linkedin.com/in/colidom)
+- 🐙 GitHub: [@colidom](https://github.com/colidom)
+
+## 🙏 Agradecimientos
+
+- [React](https://react.dev/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [EmailJS](https://www.emailjs.com/)
+- [Vercel](https://vercel.com/)
 
 ---
 
-### 2. GET /experiences
+⭐ **Si te gustó este proyecto, dale una estrella en GitHub**
 
-Devuelve una lista de experiencias laborales.
-
-| Campo           | Tipo               | Descripción                                  | Ejemplo                                                          |
-| :-------------- | :----------------- | :------------------------------------------- | :--------------------------------------------------------------- |
-| `id`            | `number`           | Identificador único                          | `1`                                                              |
-| `job_title`     | `string`           | Puesto de trabajo                            | `"Desarrollador Full-Stack"`                                     |
-| `description`   | `string`           | Descripción de las responsabilidades         | `"Desarrollo y mantenimiento de aplicaciones web..."`            |
-| `company`       | `string`           | Nombre de la empresa                         | `"Empresa S.A."`                                                 |
-| `start_date`    | `string`           | Fecha de inicio (formato ISO 8601)           | `"2022-05-01"`                                                   |
-| `end_date`      | `string`           | Fecha de fin (formato ISO 8601) o `null`     | `"2023-11-30"` o `null` para "Actualmente"                       |
-| `location`      | `string`           | Ubicación de la empresa                      | `"Madrid, España"`                                               |
-| `ubication`     | `string`           | Tipo de ubicación                            | `"En Remoto"`                                                    |
-| `work_type`     | `string`           | Tipo jornada (Completa, parcial...)          | `"Jornada Completa"`                                             |
-| `technologies`  | `array of strings` | Tecnologías usadas                           | `["Python", "Spring", "PostgreSQL"]`                             |
-
----
-
-### 3. GET /projects
-
-Devuelve una lista de proyectos.
-
-| Campo           | Tipo               | Descripción                    | Ejemplo                                     |
-| :-------------- | :----------------- | :----------------------------- | :------------------------------------------ |
-| `id`            | `number`           | Identificador único            | `1`                                         |
-| `title`         | `string`           | Título del proyecto            | `"Mi Primer Portfolio"`                     |
-| `description`   | `string`           | Descripción detallada          | `"Un proyecto de portafolio personal..."`   |
-| `technologies`  | `array of strings` | Tecnologías usadas             | `["React", "TailwindCSS", "Vite"]`          |
-| `image`         | `string`           | URL de la imagen del proyecto  | `"/priorisen-dashboard.png"`                |
-| `code_link`     | `string`           | URL al repositorio (GitHub)    | `"https://github.com/usuario/repositorio"`  |
-
----
-
-### 4. GET /about
-
-Devuelve los datos de la sección "Sobre mí".
-| Campo           | Tipo               | Descripción                   | Ejemplo                                     |
-| :---------------------------------- | :----------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------------------- |
-| `id`           | `number`           | Identificador único           | `1`                                         |
-| `description`   | `string`           | La descripción personal del portafolio.         | `"Desarrollador de software y administrador de sistemas con experiencia..."`   |
-| `keywords_to_highlight` | `array of strings` | Palabras clave que deben ser resaltadas en la descripción.          | `["React", "TailwindCSS", "Vite"]`         |
-| `profile_image`         | `string`           | URL de la imagen de perfil. | `"/avatar.jpg"`               |
-
----
-
-## 🤝 Contribuciones y Soporte
-
-Este proyecto está abierto a contribuciones.
-Si encuentras un problema o tienes una idea para una nueva característica:
-
-Abre un issue en el repositorio.
-
-Envía un pull request con tus mejoras.
+**Desarrollado con ❤️ por Carlos Oliva**

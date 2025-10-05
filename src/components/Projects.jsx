@@ -1,54 +1,297 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoCodeWorking } from "react-icons/io5";
+import { motion, AnimatePresence } from "framer-motion";
 import { getTechIcon } from "./icons/techIcons";
 import { useProjects } from "../hooks/useProjects";
+import { StaggerContainer, StaggerItem } from "./AnimatedSection";
 
 const DUMMY_IMAGE_URL = "/img-placeholder.png";
 
 const renderSkeletonLoader = () => (
-    <div className="space-y-16">
-        {[...Array(1)].map((_, index) => (
-            <article key={index} className="flex flex-col md:flex-row items-start gap-8 rounded-lg p-6 animate-pulse">
-                <div className="flex-shrink-0 w-full md:w-1/3 h-48 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="flex-1 w-full md:w-2/3">
-                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
-                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-4"></div>
-                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-                    <div className="mt-4 flex flex-wrap gap-4">
-                        <div className="flex flex-col items-center">
-                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="size-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                            <div className="h-2 w-10 bg-gray-300 dark:bg-gray-700 mt-1 rounded"></div>
-                        </div>
-                    </div>
-                    <div className="mt-8">
-                        <div className="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {[...Array(4)].map((_, index) => (
+            <div key={index} className="rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden animate-pulse">
+                <div className="h-48 bg-gray-300 dark:bg-gray-700"></div>
+                <div className="p-6 space-y-4">
+                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+                    <div className="flex gap-3 mt-4">
+                        <div className="size-8 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        <div className="size-8 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        <div className="size-8 bg-gray-300 dark:bg-gray-700 rounded"></div>
                     </div>
                 </div>
-            </article>
+            </div>
         ))}
     </div>
 );
 
+const ProjectCard = ({ project, index }) => {
+    const [imageError, setImageError] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [showAllTechs, setShowAllTechs] = useState(false);
+
+    const maxVisibleTechs = 6;
+    const visibleTechs = project.technologies?.slice(0, maxVisibleTechs) || [];
+    const hiddenTechs = project.technologies?.slice(maxVisibleTechs) || [];
+    const hasMoreTechs = hiddenTechs.length > 0;
+
+    return (
+        <StaggerItem>
+            <motion.article
+                whileHover={{ y: -8 }}
+                onHoverStart={() => setIsHovered(true)}
+                onHoverEnd={() => setIsHovered(false)}
+                className="group relative rounded-xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
+                {/* Image Container */}
+                <div className="relative h-56 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                    <motion.img
+                        src={imageError ? DUMMY_IMAGE_URL : (project.image || DUMMY_IMAGE_URL)}
+                        alt={`Captura de pantalla de ${project.title}`}
+                        onError={() => setImageError(true)}
+                        animate={{
+                            scale: isHovered ? 1.1 : 1,
+                        }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Overlay on hover */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: isHovered ? 1 : 0 }}
+                        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-6"
+                    >
+                        <div className="flex gap-4">
+                            {project.code_link && (
+                                <motion.a
+                                    href={project.code_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg text-gray-900 font-semibold text-sm hover:bg-white transition-colors duration-200 flex items-center gap-2"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <svg className="size-4" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none">
+                                        <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2c2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2a4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0c-2.4-1.6-3.5-1.3-3.5-1.3a4.2 4.2 0 0 0-.1 3.2a4.6 4.6 0 0 0-1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6.6-.6 1.2-.5 2v3.5" />
+                                    </svg>
+                                    Código
+                                </motion.a>
+                            )}
+
+                            {project.demo_link && (
+                                <motion.a
+                                    href={project.demo_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="px-4 py-2 bg-blue-500 backdrop-blur-sm rounded-lg text-white font-semibold text-sm hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <svg className="size-4" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none">
+                                        <path d="M11 7h-5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M10 14l10-10M15 4l5 0l0 5" />
+                                    </svg>
+                                    Demo
+                                </motion.a>
+                            )}
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
+                        {project.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                        {project.description}
+                    </p>
+
+                    {project.created_at && (
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
+                            {new Date(project.created_at).toLocaleDateString('es-ES', { 
+                                year: 'numeric', 
+                                month: 'long' 
+                            })}
+                        </p>
+                    )}
+
+                    {/* Technologies */}
+                    {project.technologies && Array.isArray(project.technologies) && project.technologies.length > 0 && (
+                        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <AnimatePresence mode="wait">
+                                {showAllTechs ? (
+                                    // Mostrar todas las tecnologías
+                                    <motion.div
+                                        key="all-techs"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <div className="flex flex-wrap gap-3 items-center">
+                                            {project.technologies.map((tech, techIndex) => {
+                                                const IconComponent = getTechIcon(tech);
+                                                return IconComponent ? (
+                                                    <motion.div
+                                                        key={techIndex}
+                                                        initial={{ opacity: 0, scale: 0.8 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: techIndex * 0.05 }}
+                                                        whileHover={{ scale: 1.2, rotate: 5 }}
+                                                        className="relative group/tech"
+                                                    >
+                                                        <div className="text-2xl transition-transform duration-200">
+                                                            {IconComponent}
+                                                        </div>
+                                                        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
+                                                            {tech}
+                                                        </span>
+                                                    </motion.div>
+                                                ) : null;
+                                            })}
+                                        </div>
+                                        {/* Botón mostrar menos - mejor alineado */}
+                                        <motion.button
+                                            onClick={() => setShowAllTechs(false)}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="mt-3 px-4 py-2 text-sm font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 flex items-center gap-2"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                            </svg>
+                                            Mostrar menos
+                                        </motion.button>
+                                    </motion.div>
+                                ) : (
+                                    // Mostrar tecnologías limitadas
+                                    <motion.div
+                                        key="limited-techs"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="flex flex-wrap gap-3 items-center"
+                                    >
+                                        {visibleTechs.map((tech, techIndex) => {
+                                            const IconComponent = getTechIcon(tech);
+                                            return IconComponent ? (
+                                                <motion.div
+                                                    key={techIndex}
+                                                    whileHover={{ scale: 1.2, rotate: 5 }}
+                                                    className="relative group/tech"
+                                                >
+                                                    <div className="text-2xl transition-transform duration-200">
+                                                        {IconComponent}
+                                                    </div>
+                                                    <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
+                                                        {tech}
+                                                    </span>
+                                                </motion.div>
+                                            ) : null;
+                                        })}
+                                        {/* Botón +X - mejor alineado */}
+                                        {hasMoreTechs && (
+                                            <motion.button
+                                                onClick={() => setShowAllTechs(true)}
+                                                whileHover={{ scale: 1.1 }}
+                                                whileTap={{ scale: 0.9 }}
+                                                className="relative group/more flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 font-bold text-xs transition-all duration-200"
+                                            >
+                                                +{hiddenTechs.length}
+                                                
+                                                {/* Tooltip con tecnologías ocultas */}
+                                                <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/more:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl z-10 max-w-xs">
+                                                    <span className="block font-semibold mb-1">Más tecnologías:</span>
+                                                    {hiddenTechs.join(', ')}
+                                                    <span className="block text-blue-300 mt-1 text-[10px]">Click para ver todas</span>
+                                                </span>
+                                            </motion.button>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
+                </div>
+
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-500 pointer-events-none" />
+            </motion.article>
+        </StaggerItem>
+    );
+};
+
 export default function Projects() {
     const { projectsData, loading, error, formatDate } = useProjects();
+    const [viewMode, setViewMode] = useState('grid');
 
     return (
         <section id="proyectos" className="mt-32">
-            <div className="flex items-center mb-8">
-                <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <IoCodeWorking className="size-5" />
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center justify-between mb-8"
+            >
+                <div className="flex items-center">
+                    <div className="mr-4 w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-white dark:bg-gray-800 flex items-center justify-center">
+                        <IoCodeWorking className="size-5" />
+                    </div>
+                    <h2 className="text-3xl font-bold">Proyectos</h2>
                 </div>
-                <h2 className="text-3xl font-bold">Proyectos</h2>
-            </div>
+
+                {/* View Mode Toggle */}
+                {!loading && !error && projectsData.length > 0 && (
+                    <div className="flex gap-2 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setViewMode('grid')}
+                            className={`p-2 rounded-md transition-all duration-200 ${
+                                viewMode === 'grid' 
+                                    ? 'bg-white dark:bg-gray-700 shadow-md' 
+                                    : 'hover:bg-gray-300 dark:hover:bg-gray-700'
+                            }`}
+                            aria-label="Vista de cuadrícula"
+                        >
+                            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setViewMode('list')}
+                            className={`p-2 rounded-md transition-all duration-200 ${
+                                viewMode === 'list' 
+                                    ? 'bg-white dark:bg-gray-700 shadow-md' 
+                                    : 'hover:bg-gray-300 dark:hover:bg-gray-700'
+                            }`}
+                            aria-label="Vista de lista"
+                        >
+                            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="8" y1="6" x2="21" y2="6" />
+                                <line x1="8" y1="12" x2="21" y2="12" />
+                                <line x1="8" y1="18" x2="21" y2="18" />
+                                <line x1="3" y1="6" x2="3.01" y2="6" />
+                                <line x1="3" y1="12" x2="3.01" y2="12" />
+                                <line x1="3" y1="18" x2="3.01" y2="18" />
+                            </svg>
+                        </motion.button>
+                    </div>
+                )}
+            </motion.div>
+
             {loading ? (
                 renderSkeletonLoader()
             ) : error ? (
@@ -56,110 +299,42 @@ export default function Projects() {
             ) : projectsData.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-400">Aún no has añadido proyectos.</div>
             ) : (
-                <div className="space-y-16">
-                    {projectsData.map((project, index) => (
-                        <article
-                            key={project.id || index}
-                            className="flex flex-col md:flex-row items-start gap-8 group rounded-lg p-6 transition-all duration-300 transform hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                <AnimatePresence mode="wait">
+                    {viewMode === 'grid' ? (
+                        <motion.div
+                            key="grid"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                         >
-                            <div className="flex-shrink-0 w-full md:w-1/3 overflow-hidden rounded-lg">
-                                <img
-                                    src={project.image || DUMMY_IMAGE_URL}
-                                    alt={`Captura de pantalla de ${project.title}`}
-                                    className="w-full h-auto rounded-lg"
+                            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {projectsData.map((project, index) => (
+                                    <ProjectCard 
+                                        key={project.id || index} 
+                                        project={project} 
+                                        index={index} 
+                                    />
+                                ))}
+                            </StaggerContainer>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="list"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="space-y-6"
+                        >
+                            {projectsData.map((project, index) => (
+                                <ProjectCard 
+                                    key={project.id || index} 
+                                    project={project} 
+                                    index={index} 
                                 />
-                            </div>
-                            <div className="flex-1 w-full md:w-2/3">
-                                <h3 className="text-2xl font-semibold mb-2">{project.title}</h3>
-                                <p className="text-gray-700 dark:text-gray-300 mb-2">{project.description}</p>
-                                {project.created_at && (
-                                    <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">Creado el {formatDate(project.created_at)}</p>
-                                )}
-                                {project.technologies && Array.isArray(project.technologies) && project.technologies.length > 0 && (
-                                    <div className="mt-4 mb-4">
-                                        <h4 className="text-base font-medium mb-2">Tecnologías utilizadas:</h4>
-                                        <div className="flex flex-wrap gap-4">
-                                            {project.technologies.map((tech, techIndex) => {
-                                                const IconComponent = getTechIcon(tech);
-                                                return IconComponent ? (
-                                                    <div
-                                                        key={techIndex}
-                                                        className="flex flex-col items-center group transition-transform duration-200 hover:scale-125"
-                                                    >
-                                                        {IconComponent}
-                                                        <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{tech}</span>
-                                                    </div>
-                                                ) : null;
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
-                                <div className="flex items-center space-x-4">
-                                    {project.code_link && (
-                                        <a
-                                            href={project.code_link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-blue-500 border border-blue-500 px-3 py-1.5 rounded-full flex items-center space-x-1 hover:bg-blue-500 hover:text-white transition-colors duration-200"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="size-5"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                fill="none"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path>
-                                            </svg>
-                                            <span>Código</span>
-                                        </a>
-                                    )}
-
-                                    {(() => {
-                                        const isAvailable = !!project.demo_link;
-                                        const buttonText = isAvailable ? "Ver en Vivo" : "No disponible";
-                                        const baseClasses = "px-3 py-1.5 rounded-full flex items-center space-x-1 transition-colors duration-200";
-                                        const availableClasses =
-                                            "text-emerald-600 border border-emerald-600 hover:bg-emerald-600 hover:text-white dark:text-teal-400 dark:border-teal-400 dark:hover:bg-teal-400 dark:hover:text-gray-900";
-                                        const disabledClasses =
-                                            "text-gray-400 border border-gray-400 cursor-default dark:text-gray-600 dark:border-gray-600";
-
-                                        return (
-                                            <a
-                                                href={isAvailable ? project.demo_link : "#"}
-                                                target={isAvailable ? "_blank" : "_self"}
-                                                rel={isAvailable ? "noopener noreferrer" : ""}
-                                                className={`${baseClasses} ${isAvailable ? availableClasses : disabledClasses}`}
-                                                onClick={(e) => !isAvailable && e.preventDefault()}
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="size-5"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth="2"
-                                                    stroke="currentColor"
-                                                    fill="none"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M11 7h-5a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-5"></path>
-                                                    <path d="M10 14l10 -10"></path>
-                                                    <path d="M15 4l5 0l0 5"></path>
-                                                </svg>
-                                                <span>{buttonText}</span>
-                                            </a>
-                                        );
-                                    })()}
-                                </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             )}
         </section>
     );
