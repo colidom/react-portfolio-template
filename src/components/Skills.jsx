@@ -85,7 +85,7 @@ const SkillsGrid = ({ skills, filter, currentPage, setCurrentPage }) => {
     const currentSkills = filteredSkills.slice(startIndex, endIndex);
 
     // Reset to page 1 when filter changes
-    useMemo(() => {
+    React.useEffect(() => {
         setCurrentPage(1);
     }, [filter, setCurrentPage]);
 
