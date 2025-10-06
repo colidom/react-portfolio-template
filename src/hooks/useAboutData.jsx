@@ -21,7 +21,7 @@ export const useAboutData = () => {
     useEffect(() => {
         const fetchAboutData = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/about-me`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/about-me/`);
 
                 if (response.status === 404) {
                     setHasNoData(true);

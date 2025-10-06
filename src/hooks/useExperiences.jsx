@@ -39,7 +39,7 @@ export const useExperiences = () => {
     useEffect(() => {
         const fetchExperiences = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/experiences`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/experiences/`);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }

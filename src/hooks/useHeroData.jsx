@@ -9,7 +9,7 @@ export const useHeroData = () => {
     useEffect(() => {
         const fetchHeroData = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/hero`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/hero/`);
 
                 if (response.status === 404) {
                     setHasNoData(true);
